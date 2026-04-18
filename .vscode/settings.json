@@ -1,0 +1,11 @@
+{
+    "haxelib.executable": "../../../../../Ceramic/tools/haxelib.cmd",
+    "window.title": "${activeEditorShort} — Chien_dau_voi_giai_tich",
+    "search.exclude": {
+        "**/.git": true,
+        "**/node_modules": true,
+        "**/out": true,
+        "**/tmp": true
+    },
+    "haxe.executable": "../../../../../Ceramic/tools/haxe.cmd"
+}
