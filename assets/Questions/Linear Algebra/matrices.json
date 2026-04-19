@@ -1,0 +1,27 @@
+[
+  {
+    "question": "Find the determinant of $\\begin{pmatrix} 3 & 2 \\\\ 1 & 4 \\end{pmatrix}$",
+    "answer": "10",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Find the inverse of $\\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}$",
+    "answer": "$\\begin{pmatrix} -2 & 1 \\\\ 1.5 & -0.5 \\end{pmatrix}$",
+    "difficulty": "hard"
+  },
+  {
+    "question": "Find the trace of $\\begin{pmatrix} 5 & 1 & 2 \\\\ 0 & 3 & 4 \\\\ 0 & 0 & 1 \\end{pmatrix}$",
+    "answer": "9",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Find the rank of $\\begin{pmatrix} 1 & 2 & 3 \\\\ 2 & 4 & 6 \\\\ 1 & 2 & 3 \\end{pmatrix}$",
+    "answer": "1",
+    "difficulty": "hard"
+  },
+  {
+    "question": "Is this matrix invertible? $\\begin{pmatrix} 2 & 4 \\\\ 1 & 2 \\end{pmatrix}$",
+    "answer": "No",
+    "difficulty": "easy"
+  }
+]

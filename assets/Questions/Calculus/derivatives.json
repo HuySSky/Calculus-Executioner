@@ -1,0 +1,27 @@
+[
+  {
+    "question": "Find the derivative of $f(x) = x^3 + 2x^2 - 5x + 1$",
+    "answer": "3x^2 + 4x - 5",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Find the derivative of $f(x) = \\frac{1}{x^2}$",
+    "answer": "-2/x^3",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Find the derivative of $f(x) = \\sin(x) \\cos(x)$",
+    "answer": "cos(2x)",
+    "difficulty": "hard"
+  },
+  {
+    "question": "Find the derivative of $f(x) = e^{2x} \\ln(x)$",
+    "answer": "$e^{2x}(2\\ln(x) + 1/x)$",
+    "difficulty": "hard"
+  },
+  {
+    "question": "Find the derivative of $f(x) = \\sqrt{x^2 + 1}$",
+    "answer": "$\\frac{x}{\\sqrt{x^2 + 1}}$",
+    "difficulty": "easy"
+  }
+]

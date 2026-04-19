@@ -124,7 +124,7 @@ class QuizScene extends Visual {
 		timerText.pointSize = 20;
 		timerText.color = 0xFFFFFF;
 		timerText.x = app.screen.width / 2 + 100;
-		timerText.y = app.screen.height / 2 - 100;
+		timerText.y = app.screen.height / 2 - 200;
 		add(timerText);
 	}
 

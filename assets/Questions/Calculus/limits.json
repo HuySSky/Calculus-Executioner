@@ -1,0 +1,27 @@
+[
+  {
+    "question": "$\\lim_{x \\to 2} \\frac{x^2 + 3x - 10}{x^2 + 5x - 14}$",
+    "answer": "7/9",
+    "difficulty": "easy"
+  },
+  {
+    "question": "$\\lim_{x \\to -1} \\left(\\frac{1}{x^2 + 2x - 3} - \\frac{1}{x^2 - x}\\right)$",
+    "answer": "-∞",
+    "difficulty": "hard"
+  },
+  {
+    "question": "$\\lim_{x \\to 0} x\\sin\\left(\\frac{1}{x}\\right)$",
+    "answer": "0",
+    "difficulty": "easy"
+  },
+  {
+    "question": "$\\lim_{x \\to +\\infty} \\left(\\frac{x+3}{x-5}\\right)^{x+4}$",
+    "answer": "$e^8$",
+    "difficulty": "hard"
+  },
+  {
+    "question": "$\\lim_{x \\to 2^+} \\frac{1}{x-2}$",
+    "answer": "+∞",
+    "difficulty": "easy"
+  }
+]

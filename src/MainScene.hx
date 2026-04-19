@@ -29,12 +29,7 @@ class MainScene extends Scene {
 
 		enemies = new Group<Enemy>();
 		for (i in 0...5) {
-			var isHard = Math.random() <= 0.5 ? true : false;
-			var enemy = new Enemy(50 + i * 80, 50 + i * 40, player.get_playerSpeed(), isHard);
-			enemy.target = player;
-
-			add(enemy);
-			enemies.add(enemy);
+			spawnEnemy(i);
 		}
 
 		quizScene = new QuizScene();
@@ -71,6 +66,22 @@ class MainScene extends Scene {
 		// Perform any cleanup before final destroy
 
 		super.destroy();
+	}
+
+	/**
+		Spawn enemy
+	**/
+	function spawnEnemy(i:Int) {
+		var isHard = Math.random() <= 0.5 ? true : false;
+		var enemy = new Enemy(50 + i * 80, 50 + i * 40, player.get_playerSpeed(), QuestionPool.SUBJECTS[0], isHard);
+		enemy.target = player;
+
+		if (enemy.destroyed) {
+			return;
+		}
+
+		add(enemy);
+		enemies.add(enemy);
 	}
 
 	// Pause and unpause

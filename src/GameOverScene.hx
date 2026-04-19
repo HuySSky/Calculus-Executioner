@@ -32,7 +32,7 @@ class GameOverScene extends Scene {
 		menu.color = Color.WHITE;
 		menu.anchor(0.5, 0.5);
 		menu.pos(menuBackground.width / 2, menuBackground.height / 2);
-		menu.onPointerUp(this, (info) -> {
+		menu.onPointerDown(this, (info) -> {
 			app.scenes.main = new MenuScene();
 		});
 		menuBackground.add(menu);

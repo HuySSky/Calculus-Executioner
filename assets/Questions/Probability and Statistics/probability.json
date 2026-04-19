@@ -1,0 +1,27 @@
+[
+  {
+    "question": "What is the probability of rolling a 3 on a fair six-sided die?",
+    "answer": "1/6",
+    "difficulty": "easy"
+  },
+  {
+    "question": "If P(A) = 0.3 and P(B) = 0.4, and A and B are independent, find P(A ∩ B)",
+    "answer": "0.12",
+    "difficulty": "easy"
+  },
+  {
+    "question": "What is P(A ∪ B) if P(A) = 0.5, P(B) = 0.3, and P(A ∩ B) = 0.1?",
+    "answer": "0.7",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Using Bayes' theorem, if P(A|B) = 0.8, P(B) = 0.2, P(A) = 0.3, find P(B|A)",
+    "answer": "0.533",
+    "difficulty": "hard"
+  },
+  {
+    "question": "What is the expected value of a fair die roll?",
+    "answer": "3.5",
+    "difficulty": "hard"
+  }
+]

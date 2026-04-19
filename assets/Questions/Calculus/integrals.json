@@ -1,0 +1,27 @@
+[
+  {
+    "question": "Find $\\int (3x^2 + 2x) dx$",
+    "answer": "x^3 + x^2 + C",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Find $\\int \\sin(x) dx$",
+    "answer": "-cos(x) + C",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Find $\\int e^x dx$",
+    "answer": "e^x + C",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Find $\\int x e^x dx$",
+    "answer": "$(x-1)e^x + C$",
+    "difficulty": "hard"
+  },
+  {
+    "question": "Find $\\int \\frac{1}{x^2 + 1} dx$",
+    "answer": "arctan(x) + C",
+    "difficulty": "hard"
+  }
+]

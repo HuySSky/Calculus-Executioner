@@ -4,11 +4,23 @@ import tracker.Observable;
 import ceramic.Color;
 import ceramic.Visual;
 import ceramic.Quad;
-import ceramic.Scene;
 
 enum abstract EnemyDifficulty(Int) {
-	var EASY;
-	var HARD;
+	var EASY = 0;
+	var HARD = 1;
+
+	@:to
+	public function toString():String {
+		return switch (cast this : EnemyDifficulty) {
+			case EASY: 'easy';
+			case HARD: 'hard';
+			case _: 'unknown';
+		}
+	}
+
+	public static function fromString(str:String):EnemyDifficulty {
+		return str == "hard" ? HARD : EASY;
+	}
 }
 
 class Enemy extends Quad implements Observable {
@@ -20,8 +32,8 @@ class Enemy extends Quad implements Observable {
 
 	// Question data
 	public var difficulty(get, default):EnemyDifficulty = EnemyDifficulty.EASY;
-	public var question(get, default):String = "1 + 1 = ?";
-	public var answer(get, default):String = "2";
+	public var question(get, default):String = "Question not loaded";
+	public var answer(get, default):String = "";
 
 	// Visuals
 	var defaultColor:Color;
@@ -41,7 +53,7 @@ class Enemy extends Quad implements Observable {
 	// Attack logic
 	public var target(default, set):Visual;
 
-	public function new(x:Float, y:Float, playerBaseSpeed:Float, isHard:Bool = false) {
+	public function new(x:Float, y:Float, playerBaseSpeed:Float, subject:String, isHard:Bool = false) {
 		super();
 
 		this.x = x;
@@ -71,6 +83,9 @@ class Enemy extends Quad implements Observable {
 				}
 			});
 		}
+
+		// Load question from QuestionPool
+		loadQuestion(subject);
 	}
 
 	override public function destroy() {
@@ -97,6 +112,23 @@ class Enemy extends Quad implements Observable {
 
 			velocity(dx * speed, dy * speed);
 		}
+	}
+
+	/**
+		Load a random question from QuestionPool for this subject and difficulty
+	**/
+	function loadQuestion(subject:String) {
+		var questionData = QuestionPool.getRandomQuestion(subject, difficulty);
+
+		if (questionData == null) {
+			log.error('ERROR: Could not load question for $subject ($difficulty)');
+			// Destroy this enemy and add no score
+			destroy();
+			return;
+		}
+
+		question = questionData.question;
+		answer = questionData.answer;
 	}
 
 	// Initialize sprite
