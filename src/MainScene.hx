@@ -1,5 +1,8 @@
 package;
 
+import ceramic.Color;
+import ceramic.Quad;
+import ceramic.Visual;
 import arcade.World;
 import Enemy.EnemyDifficulty;
 import ceramic.Group;
@@ -18,19 +21,38 @@ class MainScene extends Scene {
 
 	// Pause logic
 	var pauseContainer:PauseCollection;
+	var pausedFromSetting:Bool = false;
+
+	// Game progress
+	var spawnDelay:Float = 6;
+	final spawnMax:Float = 6;
+	final spawnMin:Float = 1.25;
+	final spawnRampTime:Float = 5 * 60;
+	var spawnRate:Float;
+	var spawnProgress:Visual;
+	var spawnBar:Quad;
+	var spawnEnemyTime:Float = 2;
+
+	var difficulty:Float = 0.3;
+	final difficultyMin:Float = 0.3;
+	final difficultyMax:Float = 1.0;
+	final difficultyRampTime:Float = 10 * 60;
+	var difficultyRate:Float;
+	var difficultyProgress:Visual;
+	var difficultyBar:Quad;
 
 	override function preload() {
 		// Add any asset you want to load here
+		assets.addAll();
 	}
 
 	override function create() {
+		QuestionPool.loadAllSubjects(assets);
 		player = new Player(width / 2, height / 2);
+		player.body.collideWorldBounds = true;
 		add(player);
 
 		enemies = new Group<Enemy>();
-		for (i in 0...5) {
-			spawnEnemy(i);
-		}
 
 		quizScene = new QuizScene();
 		app.onUpdate(this, quizScene.update);
@@ -38,6 +60,8 @@ class MainScene extends Scene {
 		add(quizScene);
 
 		pauseContainer = new PauseCollection();
+
+		initGameProgress();
 
 		app.onUpdate(this, updateTimer);
 	}
@@ -50,6 +74,11 @@ class MainScene extends Scene {
 
 		if (player.isDied) {
 			toGameOverScene();
+		}
+		spawnEnemyTime -= delta;
+		if (spawnEnemyTime <= 0) {
+			spawnEnemyTime = spawnDelay;
+			spawnEnemy();
 		}
 
 		var world = app.arcade.world;
@@ -64,21 +93,102 @@ class MainScene extends Scene {
 
 	override function destroy() {
 		// Perform any cleanup before final destroy
+		enemies.destroy();
+		player.destroy();
 
 		super.destroy();
+	}
+
+	// Game progress
+
+	function initGameProgress() {
+		spawnRate = (spawnMax - spawnMin) / spawnRampTime;
+		difficultyRate = (difficultyMax - difficultyMin) / difficultyRampTime;
+
+		initVisualGameProgress();
+		app.onUpdate(this, (delta) -> {
+			if (this.paused && this.pausedFromSetting)
+				return;
+
+			spawnDelay -= spawnRate * delta;
+			if (spawnDelay < spawnMin) {
+				spawnDelay = spawnMin;
+			}
+
+			difficulty += difficultyRate * delta;
+			if (difficulty > difficultyMax) {
+				difficulty = difficultyMax;
+			}
+
+			updateProgressbar();
+		});
+	}
+
+	function initVisualGameProgress() {
+		spawnProgress = new Visual();
+		difficultyProgress = new Visual();
+
+		var spawnBarBackground = new Quad();
+		spawnBarBackground.color = 0x69777777;
+		spawnBarBackground.size(width, height * .025);
+		spawnProgress.add(spawnBarBackground);
+
+		spawnBar = new Quad();
+		spawnBar.size(0, height * .025);
+		spawnBar.color = Color.LIME;
+		spawnBar.y = (spawnBarBackground.height - spawnBar.height) / 2;
+		spawnBarBackground.add(spawnBar);
+
+		add(spawnProgress);
+		spawnProgress.pos(0, height * .9);
+		spawnProgress.depth = -1;
+
+		var difficultyBarBackground = new Quad();
+		difficultyBarBackground.color = 0x69777777;
+		difficultyBarBackground.size(width, height * .025);
+		difficultyProgress.add(difficultyBarBackground);
+
+		difficultyBar = new Quad();
+		difficultyBar.size(0, height * .025);
+		difficultyBar.color = Color.ORANGE;
+		difficultyBar.y = (difficultyBarBackground.height - difficultyBar.height) / 2;
+		difficultyBarBackground.add(difficultyBar);
+
+		add(difficultyProgress);
+		difficultyProgress.pos(0, height * 0.95);
+		difficultyProgress.depth = -1;
+	}
+
+	function updateProgressbar() {
+		spawnBar.width = width * ((spawnMax - spawnDelay) / (spawnMax - spawnMin));
+		difficultyBar.width = width * (difficulty / difficultyMax);
 	}
 
 	/**
 		Spawn enemy
 	**/
-	function spawnEnemy(i:Int) {
-		var isHard = Math.random() <= 0.5 ? true : false;
-		var enemy = new Enemy(50 + i * 80, 50 + i * 40, player.get_playerSpeed(), QuestionPool.SUBJECTS[0], isHard);
-		enemy.target = player;
+	function spawnEnemy() {
+		var isHard = Math.random() <= difficulty ? true : false;
+		var x = width;
+		var y = height;
+
+		if (Math.random() < 0.5) {
+			x *= Math.random() < 0.5 ? 0 : 1;
+			y *= Math.random();
+		} else {
+			x *= Math.random();
+			y *= Math.random() < 0.5 ? 0 : 1;
+		}
+
+		var percentProgress = (spawnMax - spawnDelay) / (spawnMax - spawnMin);
+		var enemySpeed = player.get_playerSpeed() * (1 + percentProgress / 3);
+		var enemy = new Enemy(x, y, enemySpeed, QuestionPool.SUBJECTS[3], isHard);
 
 		if (enemy.destroyed) {
 			return;
 		}
+
+		enemy.target = player;
 
 		add(enemy);
 		enemies.add(enemy);
@@ -184,6 +294,7 @@ class MainScene extends Scene {
 			case EASY:
 				{
 					score += 0.5;
+					player.heal(0.25);
 				}
 			case HARD:
 				{
@@ -207,15 +318,15 @@ class MainScene extends Scene {
 	}
 
 	function handleEnemyDie(enemy:Enemy) {
-		var difficulty = enemy.difficulty;
+		var difficulty = enemy.questionData.difficulty;
 		switch (difficulty) {
 			case EASY:
 				{
-					score += 0.5 * 0.25;
+					score += 0.5 * 0.2;
 				}
 			case HARD:
 				{
-					score += 1.0 * 0.25;
+					score += 1.0 * 0.2;
 				}
 		}
 	}

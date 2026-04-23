@@ -19,8 +19,7 @@ class QuizScene extends Visual {
 	var timerText:Text;
 
 	// Quiz data
-	var correctAnswer:String;
-	var difficulty:EnemyDifficulty;
+	var questionData:QuestionData = null;
 
 	// Timer
 	var timeRemaining:Float = 60.0;
@@ -59,9 +58,10 @@ class QuizScene extends Visual {
 		questionText.pointSize = 24;
 		questionText.color = 0xFFFFFF;
 		questionText.x = app.screen.width / 2 - 150;
-		questionText.y = app.screen.height / 2 - 100;
+		questionText.y = app.screen.height / 2 - 150;
 		questionText.width = 300;
 		questionText.depth = 1;
+		questionText.fitWidth = 300;
 		add(questionText);
 
 		// Input box background
@@ -129,11 +129,10 @@ class QuizScene extends Visual {
 	}
 
 	public function setup(enemy:Enemy, onComplete:(Bool, EnemyDifficulty) -> Void) {
-		correctAnswer = enemy.answer;
-		difficulty = enemy.difficulty;
+		questionData = enemy.questionData;
 		answerInput.content = "";
 
-		questionText.content = enemy.question;
+		questionText.content = questionData.question;
 		active = true;
 
 		// Reset timer
@@ -170,11 +169,11 @@ class QuizScene extends Visual {
 	function onSubmitPressed() {
 		timerRunning = false;
 		var currentUserAnswer = answerInput.content;
-		var isCorrect = currentUserAnswer == correctAnswer;
+		var isCorrect = currentUserAnswer == questionData.answer;
 
 		// Callback to PlayScene with result
 		if (onComplete != null) {
-			onComplete(isCorrect, difficulty);
+			onComplete(isCorrect, questionData.difficulty);
 		}
 
 		// Deactivate quiz

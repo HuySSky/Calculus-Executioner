@@ -12,4 +12,9 @@ class QuestionData {
 		this.answer = answer;
 		this.difficulty = difficulty;
 	}
+
+	public static function fromJson(q:Dynamic) {
+		var question = new QuestionData(q.question, q.answer, EnemyDifficulty.fromString(q.difficulty));
+		return question;
+	}
 }

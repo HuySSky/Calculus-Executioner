@@ -13,15 +13,5 @@
     "question": "Find the derivative of $f(x) = \\sin(x) \\cos(x)$",
     "answer": "cos(2x)",
     "difficulty": "hard"
-  },
-  {
-    "question": "Find the derivative of $f(x) = e^{2x} \\ln(x)$",
-    "answer": "$e^{2x}(2\\ln(x) + 1/x)$",
-    "difficulty": "hard"
-  },
-  {
-    "question": "Find the derivative of $f(x) = \\sqrt{x^2 + 1}$",
-    "answer": "$\\frac{x}{\\sqrt{x^2 + 1}}$",
-    "difficulty": "easy"
   }
 ]

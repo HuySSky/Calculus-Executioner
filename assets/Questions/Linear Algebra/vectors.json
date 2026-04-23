@@ -10,18 +10,18 @@
     "difficulty": "easy"
   },
   {
-    "question": "Find the cross product of $(1, 0, 0)$ and $(0, 1, 0)$",
+    "question": "Find the cross product of (1, 0, 0) and (0, 1, 0)",
     "answer": "(0, 0, 1)",
     "difficulty": "hard"
   },
   {
-    "question": "Are vectors $(1, 2)$ and $(2, 4)$ linearly independent?",
+    "question": "Are vectors (1, 2) and (2, 4) linearly independent?",
     "answer": "No",
     "difficulty": "easy"
   },
   {
-    "question": "Find the angle between vectors $(1, 0)$ and $(0, 1)$",
-    "answer": "90 degrees",
+    "question": "Find the angle between vectors (1, 0) and (0, 1) (in degrees)",
+    "answer": "90",
     "difficulty": "hard"
   }
 ]

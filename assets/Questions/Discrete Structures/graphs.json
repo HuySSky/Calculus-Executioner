@@ -5,7 +5,7 @@
     "difficulty": "easy"
   },
   {
-    "question": "Is a tree with 5 vertices always acyclic?",
+    "question": "Is a tree with 5 vertices always acyclic? (Yes/No)",
     "answer": "Yes",
     "difficulty": "easy"
   },

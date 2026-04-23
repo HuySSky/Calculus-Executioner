@@ -5,7 +5,7 @@ import ceramic.Scene;
 
 class Bullet extends Quad {
 	// Properties
-	private final baseSpeed:Float = 500.0; // pixels per second
+	private final baseSpeed:Float = 625.0; // pixels per second
 	private final lifespan:Float = 0.75; // seconds
 
 	public var damage(get, null):Float = 1; // Fixed damage

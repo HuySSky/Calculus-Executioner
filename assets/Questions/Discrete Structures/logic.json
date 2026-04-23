@@ -20,8 +20,8 @@
     "difficulty": "easy"
   },
   {
-    "question": "What is the De Morgan's law for $\\neg(p \\lor q)$?",
-    "answer": "$\\neg p \\land \\neg q$",
+    "question": "What is the De Morgan's law for (p or q)' ?",
+    "answer": "p' and q'",
     "difficulty": "hard"
   }
 ]

@@ -1,223 +1,137 @@
 package;
 
-import haxe.Json;
+import ceramic.Assets;
 import Enemy.EnemyDifficulty;
 
+/**
+	QuestionPool preloads questions from data assets, stores and retrives questions anytime. 
+**/
 class QuestionPool {
-	// Cached questions: Map<subject, Map<difficulty, Array<QuestionData>>>
-	// Pre-organized by difficulty to avoid expensive filtering at query time
 	static var cachedQuestions:Map<String, Map<EnemyDifficulty, Array<QuestionData>>> = new Map();
 
-	// List of available subjects
+	static var assets:Assets;
+
 	public static final SUBJECTS = [
 		"Calculus",
-		"Linear Algebra",
 		"Discrete Structures",
+		"Linear Algebra",
 		"Probability and Statistics"
 	];
 
-	// List of question types per subject
-	public static final QUESTION_TYPES:Map<String, Array<String>> = [
-		SUBJECTS[0] => ["limits", "derivatives", "integrals"],
-		SUBJECTS[1] => ["matrices", "vectors"],
-		SUBJECTS[2] => ["graphs", "logic"],
+	public static final TYPES = [
+		SUBJECTS[0] => ["limits", "integrals", "derivatives"],
+		SUBJECTS[1] => ["graphs", "logic"],
+		SUBJECTS[2] => ["matrices", "vectors"],
 		SUBJECTS[3] => ["probability", "statistics"]
 	];
 
 	/**
-		Load all subjects synchronously at app startup.
-		Must be called in Project.hx before any gameplay.
+		This function load all question into cache
 	**/
-	public static function loadAllSubjects() {
-		log.info("Loading all question subjects...");
+	public static function loadAllSubjects(assets:Assets) {
+		log.info('Loading question');
 
+		QuestionPool.assets = assets;
+		var count:Int = 0;
 		for (subject in SUBJECTS) {
-			loadSubject(subject);
-		}
-
-		var totalLoaded = 0;
-		for (difficultyMap in cachedQuestions) {
-			for (questions in difficultyMap) {
-				totalLoaded += questions.length;
-			}
-		}
-
-		log.success("All subjects loaded successfully! Total: " + totalLoaded + " questions");
-	}
-
-	/**
-		Load all question types for a specific subject.
-		Synchronous - blocking operation.
-	**/
-	static function loadSubject(subject:String) {
-		var types = QUESTION_TYPES.get(subject);
-
-		if (types == null) {
-			log.error("Subject not found in QUESTION_TYPES: " + subject);
-			return;
-		}
-
-		var subjectQuestion = cachedQuestions.get(subject);
-		if (subjectQuestion == null) {
-			subjectQuestion = new Map();
+			var subjectQuestion = loadSubject(subject);
 			cachedQuestions.set(subject, subjectQuestion);
+
+			for (item in subjectQuestion) {
+				count += item.length;
+			}
 		}
 
-		for (type in types) {
-			var loadedQuestions = loadQuestionType(subject, type);
+		log.success('Load success $count questions');
+	}
 
-			for (q in loadedQuestions) {
-				var arr = subjectQuestion.get(q.difficulty);
-				if (arr == null) {
-					arr = [];
-					subjectQuestion.set(q.difficulty, arr);
+	/**
+		Load and return all question of the subject. 
+	**/
+	static function loadSubject(subject:String):Map<EnemyDifficulty, Array<QuestionData>> {
+		var subjectQuestions:Map<EnemyDifficulty, Array<QuestionData>> = [];
+
+		for (type in TYPES[subject]) {
+			var loadedQuestion:Array<QuestionData> = loadType(subject, type);
+
+			// Seperate question base on difficulty
+			for (q in loadedQuestion) {
+				var difficulty:EnemyDifficulty = q.difficulty;
+
+				var questions:Array<QuestionData> = subjectQuestions.get(difficulty);
+				if (questions == null) {
+					questions = [];
+					subjectQuestions.set(difficulty, questions);
 				}
-				arr.push(q);
-			}
-		}
-
-		// log.info("Has data: " + cachedQuestions.get(subject).get(EASY).length);
-	}
-
-	/**
-		Load a specific question type file (e.g., Calculus/limits.json).
-		Synchronous loading - returns array or null on failure.
-	**/
-	static function loadQuestionType(subject:String, type:String):Array<QuestionData> {
-		var path = 'Questions/${subject}/${type}';
-
-		#if js
-		// Browser environment - synchronous fetch
-		return loadJsonFromUrlSync(path);
-		#else
-		// C++ / Desktop environment - read from file system
-		return loadJsonFromFileSync(path);
-		#end
-	}
-
-	/**
-		Load JSON from file synchronously (for C++ builds).
-	**/
-	#if !js
-	static function loadJsonFromFileSync(path:String):Array<QuestionData> {
-		try {
-			var content = sys.io.File.getContent(path);
-			var json:Array<Dynamic> = Json.parse(content);
-			return parseQuestionsFromJson(json);
-		} catch (e:Dynamic) {
-			log.error("Error loading file " + path + ": " + e);
-			return [];
-		}
-	}
-	#end
-
-	/**
-		Load JSON from URL synchronously (for web builds).
-		Note: Synchronous XHR is deprecated but works for file loading at startup.
-	**/
-	#if js
-	static function loadJsonFromUrlSync(path:String):Array<QuestionData> {
-		try {
-			var data = app.assets.text(path);
-			var json:Array<Dynamic> = Json.parse(data);
-			var result = parseQuestionsFromJson(json);
-
-			return result;
-		} catch (e:Dynamic) {
-			log.error("Error parsing JSON from " + path + ": " + e);
-			return [];
-		}
-	}
-	#end
-
-	/**
-		Parse raw JSON array into QuestionData objects.
-	**/
-	static function parseQuestionsFromJson(jsonArray:Array<Dynamic>):Array<QuestionData> {
-		var questions:Array<QuestionData> = [];
-
-		for (item in jsonArray) {
-			try {
-				var q = new QuestionData(item.question, item.answer, EnemyDifficulty.fromString(item.difficulty));
 				questions.push(q);
-			} catch (e:Dynamic) {
-				log.error("Error parsing question item: " + e);
-				continue;
 			}
 		}
 
-		return questions;
+		return subjectQuestions;
 	}
 
 	/**
-		Get random question by subject and optional difficulty.
-		If difficulty is null, returns any difficulty.
-		Returns null if subject not found or no questions available.
+		Load and return a specific question type of subject
 	**/
-	public static function getRandomQuestion(subject:String, ?difficulty:EnemyDifficulty):QuestionData {
-		if (!cachedQuestions.exists(subject)) {
-			log.error("Subject not loaded: " + subject);
-			return null;
+	static function loadType(subject:String, type:String):Array<QuestionData> {
+		var path = 'Questions/$subject/$type';
+		return loadFromPath(path);
+	}
+
+	/**
+		Get data from built in preload and return questions
+	**/
+	static function loadFromPath(path:String):Array<QuestionData> {
+		if (assets == null) {
+			return [];
 		}
 
-		var difficultyMap = cachedQuestions.get(subject);
+		var json = assets.text(path); // Get json string from built-in preload
+		if (json == null) {
+			log.error('Get data fail, path = $path');
+			return [];
+		}
 
-		var questions:Array<QuestionData> = [];
+		var questions:Array<Dynamic> = haxe.Json.parse(json);
 
-		// If difficulty specified, get that array; otherwise combine both
+		var questionArray:Array<QuestionData> = [];
+		for (q in questions) {
+			var questionData = QuestionData.fromJson(q);
+			questionArray.push(questionData);
+		}
+
+		return questionArray;
+	}
+
+	/**
+		Get question randomly
+	**/
+	public static function getRandomQuestion(subject:String, difficulty:EnemyDifficulty = null):QuestionData {
+		var questions:Array<QuestionData> = null;
+		var subjectQuestions = cachedQuestions.get(subject);
+
 		if (difficulty != null) {
-			questions = difficultyMap.get(difficulty);
+			questions = subjectQuestions.get(difficulty);
 		} else {
-			// Combine both difficulties
-			for (combine in difficultyMap) {
+			if (questions == null)
+				questions = [];
+
+			for (combine in subjectQuestions) {
 				for (item in combine) {
 					questions.push(item);
 				}
 			}
 		}
 
-		if (questions == null || questions.length == 0) {
-			var logDifficulty = "";
-			if (difficulty != null) {
-				logDifficulty = ", difficulty= " + difficulty;
-			}
-
-			log.error("No questions found for subject= " + subject + logDifficulty);
+		if (questions == null) {
 			return null;
 		}
 
-		var randomIndex = Math.floor(Math.random() * questions.length);
-		log.info('Get #$randomIndex question');
-		return questions[randomIndex];
-	}
+		var length = questions.length;
 
-	/**
-		Get total question count for a subject.
-		If difficulty specified, returns count for that difficulty only.
-	**/
-	public static function getQuestionCount(subject:String, ?difficulty:EnemyDifficulty):Int {
-		if (!cachedQuestions.exists(subject)) {
-			return 0;
-		}
+		// Ensure position is an integer in range [0, length)
+		var position = Math.floor(Math.random() * length);
 
-		var difficultyMap = cachedQuestions.get(subject);
-
-		if (difficulty != null) {
-			var questions = difficultyMap.get(difficulty);
-			return questions != null ? questions.length : 0;
-		}
-
-		var total = 0;
-		for (questions in difficultyMap) {
-			total += questions.length;
-		}
-		return total;
-	}
-
-	/**
-		Clear cache (for testing or resetting).
-	**/
-	public static function clearCache() {
-		cachedQuestions.clear();
+		return questions[position];
 	}
 }

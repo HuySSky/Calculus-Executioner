@@ -19,7 +19,7 @@ enum abstract EnemyDifficulty(Int) {
 	}
 
 	public static function fromString(str:String):EnemyDifficulty {
-		return str == "hard" ? HARD : EASY;
+		return str.toLowerCase() == "hard" ? HARD : EASY;
 	}
 }
 
@@ -31,9 +31,7 @@ class Enemy extends Quad implements Observable {
 	var baseSpeed:Float;
 
 	// Question data
-	public var difficulty(get, default):EnemyDifficulty = EnemyDifficulty.EASY;
-	public var question(get, default):String = "Question not loaded";
-	public var answer(get, default):String = "";
+	public var questionData(get, default) = new QuestionData("Question not loaded", "", EASY);
 
 	// Visuals
 	var defaultColor:Color;
@@ -67,8 +65,8 @@ class Enemy extends Quad implements Observable {
 		onHealthChange(this, updateHealthbar);
 		onHealthChange(this, checkHealth);
 
-		// Speed: 0.4x player speed
-		baseSpeed = playerBaseSpeed * 0.4;
+		// Speed: 0.4x-0.6x player speed
+		baseSpeed = playerBaseSpeed * (Math.random() * 0.2 + 0.4);
 
 		// Enemy visual
 		initHealthbar();
@@ -76,9 +74,9 @@ class Enemy extends Quad implements Observable {
 
 		// Setup speed buff for hard difficulty
 		if (isHard) {
-			difficulty = HARD;
+			questionData.difficulty = HARD;
 			_buffTimer = Timer.interval(this, 1, () -> {
-				if (Math.random() <= 0.8) { // 0.5% chance
+				if (Math.random() <= 0.4) { // 40% chance
 					activateSpeedBuff();
 				}
 			});
@@ -93,42 +91,42 @@ class Enemy extends Quad implements Observable {
 	}
 
 	public function update(delta:Float) {
-		updateVelocityToward();
+		updateVelocity();
 	}
 
-	public function updateVelocityToward() {
-		var dx = target.x - this.x;
-		var dy = target.y - this.y;
-		var distance = Math.sqrt(dx * dx + dy * dy);
+	private function updateVelocity() {
+		var dx = target.x - x;
+		var dy = target.y - y;
+		var length = Math.sqrt(dx * dx + dy * dy);
+		dx /= length;
+		dy /= length;
 
-		if (distance > 0) {
-			dx /= distance;
-			dy /= distance;
+		var velX = baseSpeed * dx;
+		var velY = baseSpeed * dy;
 
-			var speed = baseSpeed;
-			if (hasSpeedBuff) {
-				speed *= 3;
-			}
-
-			velocity(dx * speed, dy * speed);
+		if (hasSpeedBuff) {
+			velX *= 3;
+			velY *= 3;
 		}
+
+		velocity(velX, velY);
 	}
 
 	/**
 		Load a random question from QuestionPool for this subject and difficulty
 	**/
 	function loadQuestion(subject:String) {
-		var questionData = QuestionPool.getRandomQuestion(subject, difficulty);
+		var q = QuestionPool.getRandomQuestion(subject, questionData.difficulty);
 
-		if (questionData == null) {
-			log.error('ERROR: Could not load question for $subject ($difficulty)');
+		if (q == null) {
+			log.error('ERROR: Could not load question for $subject ($q.difficulty)');
 			// Destroy this enemy and add no score
 			destroy();
 			return;
 		}
 
-		question = questionData.question;
-		answer = questionData.answer;
+		questionData.question = q.question;
+		questionData.answer = q.answer;
 	}
 
 	// Initialize sprite
@@ -229,10 +227,10 @@ class Enemy extends Quad implements Observable {
 	// To string
 	override public function toString() {
 		var out:String = "";
-		out += 'Question: $question\n';
-		out += 'Answer: $answer\n';
+		out += 'Question: ${questionData.question}\n';
+		out += 'Answer: ${questionData.answer}\n';
 		out += 'Health: $health\n';
-		out += 'Difficulty: $difficulty\n';
+		out += 'Difficulty: ${questionData.difficulty}\n';
 
 		return out;
 	}
@@ -262,15 +260,7 @@ class Enemy extends Quad implements Observable {
 		return target = value;
 	}
 
-	function get_difficulty():EnemyDifficulty {
-		return difficulty;
-	}
-
-	function get_question():String {
-		return question;
-	}
-
-	function get_answer():String {
-		return answer;
+	function get_questionData() {
+		return questionData;
 	}
 }
