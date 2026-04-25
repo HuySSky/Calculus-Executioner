@@ -41,6 +41,8 @@ class MainScene extends Scene {
 	var difficultyProgress:Visual;
 	var difficultyBar:Quad;
 
+	// Setting button
+
 	override function preload() {
 		// Add any asset you want to load here
 		assets.addAll();
