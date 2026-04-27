@@ -1,5 +1,6 @@
 package;
 
+import ceramic.Sound;
 import ceramic.Group;
 import ceramic.Quad;
 import ceramic.InputMap;
@@ -22,6 +23,8 @@ class Player extends Quad {
 	// Shooting properties
 	private var shootCooldown:Float = 0.0;
 	private final shootCooldownRate:Float = 0.325; // seconds
+
+	@event function shot();
 
 	// Bullets group
 	@:isVar public var bullets(get, null):Group<Bullet> = new Group<Bullet>();
@@ -120,9 +123,7 @@ class Player extends Quad {
 			parent.add(bullet);
 		}
 		bullets.add(bullet);
-
-		// Optional: Add sound effect here
-		// audio.playSound('shoot');
+		emitShot();
 	}
 
 	/**

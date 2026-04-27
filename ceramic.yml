@@ -31,10 +31,10 @@ app:
         #- http
 
         # UI-related classes
-        #- ui
+        - ui
 
         # Immediate GUI utility (requires ui plugin)
-        #- elements
+        - elements
 
         # Gif capture utility
         #- gif

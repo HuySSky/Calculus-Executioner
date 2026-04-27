@@ -1,5 +1,8 @@
 package;
 
+import elements.Im;
+import ceramic.Sound;
+import ceramic.SoundPlayer;
 import ceramic.Color;
 import ceramic.Quad;
 import ceramic.Visual;
@@ -42,10 +45,17 @@ class MainScene extends Scene {
 	var difficultyBar:Quad;
 
 	// Setting button
+	var setting:Setting;
+
+	// Audio
+	var backgroundMusic:SoundPlayer;
+	var gunshotAudio:Sound;
 
 	override function preload() {
 		// Add any asset you want to load here
-		assets.addAll();
+		assets.addAll(~/^Questions\/.*$/);
+		assets.add(Sounds.BATTLE_THEME, null, {stream: true});
+		assets.add(Sounds.GUN_SHOT_EFFECT_1_5X);
 	}
 
 	override function create() {
@@ -62,6 +72,21 @@ class MainScene extends Scene {
 		add(quizScene);
 
 		pauseContainer = new PauseCollection();
+		setting = new Setting();
+		setting.depth = 100;
+		setting.onPaused(this, () -> {
+			pausedFromSetting = true;
+			quizScene.touchable = false;
+			pause();
+		});
+		setting.onUnpaused(this, () -> {
+			pausedFromSetting = false;
+			quizScene.touchable = true;
+			unPause();
+		});
+		add(setting);
+
+		prepareAudio();
 
 		initGameProgress();
 
@@ -98,7 +123,35 @@ class MainScene extends Scene {
 		enemies.destroy();
 		player.destroy();
 
+		pauseContainer.clear();
+		pauseContainer = null;
+
 		super.destroy();
+	}
+
+	// Game audio
+
+	function prepareAudio() {
+		backgroundMusic = assets.sound(Sounds.BATTLE_THEME).play(0, true);
+		gunshotAudio = assets.sound(Sounds.GUN_SHOT_EFFECT_1_5X);
+		gunshotAudio.volume = 0.25;
+
+		player.onShot(player, () -> {
+			gunshotAudio.play();
+		});
+
+		app.onUpdate(this, delta -> {
+			if (setting.settingScreen.active) {
+				audioSetting();
+			}
+		});
+	}
+
+	function audioSetting() {
+		Im.begin("Volume mixer", 250);
+		Im.slideFloat("Background music", Im.float(backgroundMusic.volume), 0, 1, 100);
+		Im.slideFloat("Gun shot effect", Im.float(gunshotAudio.volume), 0, 1, 100);
+		Im.end();
 	}
 
 	// Game progress
@@ -202,6 +255,10 @@ class MainScene extends Scene {
 		Pause this scene should be call through this function
 	**/
 	public function pause() {
+		if (paused == true) {
+			return;
+		}
+
 		paused = true;
 		pauseContainer.add(player);
 		for (enemy in enemies.items) {
@@ -217,6 +274,10 @@ class MainScene extends Scene {
 	}
 
 	public function unPause() {
+		if (quizScene.active == true || pausedFromSetting == true) {
+			return;
+		}
+
 		paused = false;
 		for (enemy in enemies.items) {
 			enemy.triggerTimer();

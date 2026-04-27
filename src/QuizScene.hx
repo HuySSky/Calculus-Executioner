@@ -171,12 +171,12 @@ class QuizScene extends Visual {
 		var currentUserAnswer = answerInput.content;
 		var isCorrect = currentUserAnswer == questionData.answer;
 
+		// Deactivate quiz
+		active = false;
+
 		// Callback to PlayScene with result
 		if (onComplete != null) {
 			onComplete(isCorrect, questionData.difficulty);
 		}
-
-		// Deactivate quiz
-		active = false;
 	}
 }
