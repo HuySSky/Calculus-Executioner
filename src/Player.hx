@@ -1,6 +1,5 @@
 package;
 
-import ceramic.Sound;
 import ceramic.Group;
 import ceramic.Quad;
 import ceramic.InputMap;
@@ -15,7 +14,8 @@ enum abstract PlayerInput(Int) {
 
 class Player extends Quad {
 	// Properties
-	private var health:Float = 3.0;
+	public var health:Float = 3.0;
+
 	private final baseSpeed:Float = 200.0; // pixels per second
 
 	public var isDied(get, default):Bool = false;
@@ -25,6 +25,8 @@ class Player extends Quad {
 	private final shootCooldownRate:Float = 0.325; // seconds
 
 	@event function shot();
+
+	@event function healthChange();
 
 	// Bullets group
 	@:isVar public var bullets(get, null):Group<Bullet> = new Group<Bullet>();
@@ -131,6 +133,7 @@ class Player extends Quad {
 	 */
 	public function takeDamage(damage:Float = 1.0) {
 		health -= damage;
+		emitHealthChange();
 
 		if (health <= 0) {
 			health = 0;
@@ -148,6 +151,7 @@ class Player extends Quad {
 	 */
 	public function heal(amount:Float) {
 		health += amount;
+		emitHealthChange();
 	}
 
 	/**

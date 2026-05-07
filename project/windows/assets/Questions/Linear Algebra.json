@@ -1,0 +1,47 @@
+[
+    {
+        "question": "Find the determinant of $\\begin{pmatrix} 3 & 2 \\\\ 1 & 4 \\end{pmatrix}$",
+        "answer": "10",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Find the trace of $\\begin{pmatrix} 5 & 1 & 2 \\\\ 0 & 3 & 4 \\\\ 0 & 0 & 1 \\end{pmatrix}$",
+        "answer": "9",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Find the rank of $\\begin{pmatrix} 1 & 2 & 3 \\\\ 2 & 4 & 6 \\\\ 1 & 2 & 3 \\end{pmatrix}$",
+        "answer": "1",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Is this matrix invertible? $\\begin{pmatrix} 2 & 4 \\\\ 1 & 2 \\end{pmatrix}$",
+        "answer": "No",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Find the dot product of $(1, 2, 3)$ and $(4, 5, 6)$",
+        "answer": "32",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Find the magnitude of vector $(3, 4)$",
+        "answer": "5",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Find the cross product of (1, 0, 0) and (0, 1, 0)",
+        "answer": "(0, 0, 1)",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Are vectors (1, 2) and (2, 4) linearly independent?",
+        "answer": "No",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Find the angle between vectors (1, 0) and (0, 1) (in degrees)",
+        "answer": "90",
+        "difficulty": "hard"
+    }
+]

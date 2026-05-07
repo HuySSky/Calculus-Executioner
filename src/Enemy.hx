@@ -119,7 +119,7 @@ class Enemy extends Quad implements Observable {
 		var q = QuestionPool.getRandomQuestion(subject, questionData.difficulty);
 
 		if (q == null) {
-			log.error('ERROR: Could not load question for $subject ($q.difficulty)');
+			log.error('ERROR: Could not load question for $subject (${questionData.difficulty})');
 			// Destroy this enemy and add no score
 			destroy();
 			return;

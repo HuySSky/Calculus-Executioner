@@ -1,0 +1,57 @@
+[
+    {
+        "question": "Find the derivative of $f(x) = x^3 + 2x^2 - 5x + 1$",
+        "answer": "3x^2 + 4x - 5",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Find the derivative of $f(x) = \\frac{1}{x^2}$",
+        "answer": "-2/x^3",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Find the derivative of $f(x) = \\sin(x) \\cos(x)$",
+        "answer": "cos(2x)",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Find $\\int (3x^2 + 2x) dx$",
+        "answer": "x^3 + x^2 + C",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Find $\\int \\sin(x) dx$",
+        "answer": "-cos(x) + C",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Find $\\int \\frac{1}{x^2 + 1} dx$",
+        "answer": "arctan(x) + C",
+        "difficulty": "hard"
+    },
+    {
+        "question": "$\\lim_{x \\to 2} \\frac{x^2 + 3x - 10}{x^2 + 5x - 14}$",
+        "answer": "7/9",
+        "difficulty": "easy"
+    },
+    {
+        "question": "$\\lim_{x \\to -1} \\left(\\frac{1}{x^2 + 2x - 3} - \\frac{1}{x^2 - x}\\right)$",
+        "answer": "-infty",
+        "difficulty": "hard"
+    },
+    {
+        "question": "$\\lim_{x \\to 0} x\\sin\\left(\\frac{1}{x}\\right)$",
+        "answer": "0",
+        "difficulty": "easy"
+    },
+    {
+        "question": "$\\lim_{x \\to +\\infty} \\left(\\frac{x+3}{x-5}\\right)^{x+4}$",
+        "answer": "e^8",
+        "difficulty": "hard"
+    },
+    {
+        "question": "$\\lim_{x \\to 2^+} \\frac{1}{x-2}$",
+        "answer": "+inf",
+        "difficulty": "easy"
+    }
+]

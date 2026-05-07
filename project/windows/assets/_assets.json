@@ -1,0 +1,91 @@
+{
+    "assets": [
+        {
+            "name": "battle theme.wav"
+        },
+        {
+            "name": "ceramic.png"
+        },
+        {
+            "name": "ceramic@2x.png"
+        },
+        {
+            "name": "entypo.fnt"
+        },
+        {
+            "name": "entypo.png"
+        },
+        {
+            "name": "gun shot effect 1.5x.mp3"
+        },
+        {
+            "name": "gun shot effect.mp3"
+        },
+        {
+            "name": "main menu.wav"
+        },
+        {
+            "name": "Notebook/Calculus.png"
+        },
+        {
+            "name": "Notebook/Discrete Structures.png"
+        },
+        {
+            "name": "Notebook/Linear Algebra.png"
+        },
+        {
+            "name": "Notebook/Probability and Statistics.png"
+        },
+        {
+            "name": "Questions/Calculus.json"
+        },
+        {
+            "name": "Questions/Discrete Structures.json"
+        },
+        {
+            "name": "Questions/Linear Algebra.json"
+        },
+        {
+            "name": "Questions/Probability and Statistics.json"
+        },
+        {
+            "name": "RobotoMedium.fnt"
+        },
+        {
+            "name": "RobotoMedium.png"
+        },
+        {
+            "name": "saves/Calculus.json"
+        },
+        {
+            "name": "saves/Combination.json"
+        },
+        {
+            "name": "saves/Discrete Structures.json"
+        },
+        {
+            "name": "saves/Linear Algebra.json"
+        },
+        {
+            "name": "saves/Probability and Statistics.json"
+        },
+        {
+            "name": "Subject/Calculus.png"
+        },
+        {
+            "name": "Subject/Combination.png"
+        },
+        {
+            "name": "Subject/Discrete Structures.png"
+        },
+        {
+            "name": "Subject/Linear Algebra.png"
+        },
+        {
+            "name": "Subject/Probability and Statistics.png"
+        },
+        {
+            "name": "white.png"
+        }
+    ]
+}

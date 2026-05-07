@@ -1,5 +1,6 @@
 package;
 
+import haxe.Json;
 import ceramic.Assets;
 import Enemy.EnemyDifficulty;
 
@@ -12,17 +13,11 @@ class QuestionPool {
 	static var assets:Assets;
 
 	public static final SUBJECTS = [
+		"Linear Algebra",
 		"Calculus",
 		"Discrete Structures",
-		"Linear Algebra",
-		"Probability and Statistics"
-	];
-
-	public static final TYPES = [
-		SUBJECTS[0] => ["limits", "integrals", "derivatives"],
-		SUBJECTS[1] => ["graphs", "logic"],
-		SUBJECTS[2] => ["matrices", "vectors"],
-		SUBJECTS[3] => ["probability", "statistics"]
+		"Probability and Statistics",
+		"Combination"
 	];
 
 	/**
@@ -51,56 +46,42 @@ class QuestionPool {
 	static function loadSubject(subject:String):Map<EnemyDifficulty, Array<QuestionData>> {
 		var subjectQuestions:Map<EnemyDifficulty, Array<QuestionData>> = [];
 
-		for (type in TYPES[subject]) {
-			var loadedQuestion:Array<QuestionData> = loadType(subject, type);
+		var loadedQuestion:Array<QuestionData> = loadFromPath('Questions/$subject');
 
-			// Seperate question base on difficulty
-			for (q in loadedQuestion) {
-				var difficulty:EnemyDifficulty = q.difficulty;
+		for (q in loadedQuestion) {
+			var difficulty:EnemyDifficulty = q.difficulty;
 
-				var questions:Array<QuestionData> = subjectQuestions.get(difficulty);
-				if (questions == null) {
-					questions = [];
-					subjectQuestions.set(difficulty, questions);
-				}
-				questions.push(q);
+			var questions:Array<QuestionData> = subjectQuestions.get(difficulty);
+			if (questions == null) {
+				questions = [];
+				subjectQuestions.set(difficulty, questions);
 			}
+			questions.push(q);
 		}
 
 		return subjectQuestions;
 	}
 
 	/**
-		Load and return a specific question type of subject
-	**/
-	static function loadType(subject:String, type:String):Array<QuestionData> {
-		var path = 'Questions/$subject/$type';
-		return loadFromPath(path);
-	}
-
-	/**
 		Get data from built in preload and return questions
 	**/
 	static function loadFromPath(path:String):Array<QuestionData> {
-		if (assets == null) {
+		if (assets == null)
 			return [];
-		}
 
-		var json = assets.text(path); // Get json string from built-in preload
+		var json = assets.text(path);
 		if (json == null) {
-			log.error('Get data fail, path = $path');
 			return [];
 		}
 
-		var questions:Array<Dynamic> = haxe.Json.parse(json);
-
-		var questionArray:Array<QuestionData> = [];
-		for (q in questions) {
-			var questionData = QuestionData.fromJson(q);
-			questionArray.push(questionData);
+		var questionsString:Array<Dynamic> = Json.parse(assets.text(path));
+		var questions = new Array<QuestionData>();
+		for (q in questionsString) {
+			var question = QuestionData.fromJson(q);
+			questions.push(question);
 		}
 
-		return questionArray;
+		return questions;
 	}
 
 	/**
@@ -113,8 +94,7 @@ class QuestionPool {
 		if (difficulty != null) {
 			questions = subjectQuestions.get(difficulty);
 		} else {
-			if (questions == null)
-				questions = [];
+			questions = [];
 
 			for (combine in subjectQuestions) {
 				for (item in combine) {

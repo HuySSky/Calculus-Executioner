@@ -1,5 +1,6 @@
 package;
 
+import ceramic.Assets;
 import ceramic.Entity;
 import ceramic.Color;
 import ceramic.InitSettings;
@@ -9,7 +10,7 @@ class Project extends Entity {
 		super();
 
 		settings.antialiasing = 2;
-		settings.background = Color.BLACK;
+		settings.background = 0x191F2B;
 		settings.targetWidth = 1024;
 		settings.targetHeight = 720;
 		settings.scaling = FIT;
