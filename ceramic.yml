@@ -16,10 +16,10 @@ app:
         #- nape
 
         # Support of .ase/.aseprite files
-        #- ase
+        - ase
 
         # Sprite support (requires ase plugin to create sprites from .ase/.aseprite files)
-        #- sprite
+        - sprite
 
         # Tilemap support (.tmx/.tsx loading included, requires ldtk plugin to create tilemaps from .ldtk files)
         #- tilemap

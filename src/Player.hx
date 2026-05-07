@@ -1,5 +1,6 @@
 package;
 
+import ceramic.Assets;
 import ceramic.Group;
 import ceramic.Quad;
 import ceramic.InputMap;
@@ -23,6 +24,8 @@ class Player extends Quad {
 	// Shooting properties
 	private var shootCooldown:Float = 0.0;
 	private final shootCooldownRate:Float = 0.325; // seconds
+
+	public var assets:Assets = null;
 
 	@event function shot();
 
@@ -117,7 +120,7 @@ class Player extends Quad {
 		var x = app.screen.pointerX;
 		var y = app.screen.pointerY;
 		var angle = Math.atan2(y - this.y, x - this.x);
-		var bullet = new Bullet(this.x, this.y, angle);
+		var bullet = new Bullet(this.assets, this.x, this.y, angle);
 		bullet.depth = 100;
 
 		// Add bullet to game

@@ -1,6 +1,5 @@
 package;
 
-import ceramic.Texture;
 import ceramic.Json;
 import ceramic.Files;
 import ceramic.Text;
@@ -14,6 +13,8 @@ import arcade.World;
 import Enemy.EnemyDifficulty;
 import ceramic.Group;
 import ceramic.Scene;
+
+using ceramic.SpritePlugin;
 
 typedef LevelData = {
 	var subject:Array<String>;
@@ -55,6 +56,7 @@ class MainScene extends Scene {
 		assets.add(Sounds.BATTLE_THEME, null, {stream: true});
 		assets.add(Sounds.GUN_SHOT_EFFECT_1_5X);
 		assets.addAll(~/^Notebook\/.*$/);
+		assets.add(Sprites.INK);
 	}
 
 	override function create() {
@@ -121,6 +123,7 @@ class MainScene extends Scene {
 
 	function setupEntities() {
 		player.body.collideWorldBounds = true;
+		player.assets = this.assets;
 		add(player);
 
 		app.onUpdate(this, quizScene.update);
@@ -420,12 +423,14 @@ class MainScene extends Scene {
 	function overlapEnemiesAndBullet(world:World) {
 		for (enemy in enemies.items) {
 			for (bullet in player.bullets.items) {
+				if (bullet.animation == 'splash') {
+					continue;
+				}
 				if (!world.overlap(enemy, bullet)) {
 					continue;
 				}
 
 				enemy.takeDamage(bullet.damage);
-				bullet.destroy();
 
 				if (enemy.health <= 0) {
 					handleEnemyDie(enemy);

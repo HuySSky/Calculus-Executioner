@@ -1,14 +1,23 @@
 package;
 
-import ceramic.Quad;
-import ceramic.Scene;
+import ceramic.Assets;
+import ceramic.SpriteSheet;
+import ceramic.Sprite;
+import ceramic.StateMachine;
 
-class Bullet extends Quad {
+using ceramic.SpritePlugin;
+
+enum State {
+	idle;
+	splash;
+}
+
+class Bullet extends Sprite {
 	// Properties
 	private final baseSpeed:Float = 625.0; // pixels per second
 	private final lifespan:Float = 0.75; // seconds
 
-	public var damage(get, null):Float = 1; // Fixed damage
+	public var damage(get, null):Float;
 
 	// Bullet size
 	private final bulletWidth:Float = 8.0;
@@ -16,8 +25,16 @@ class Bullet extends Quad {
 
 	// Stop timer
 	var _killBullet:() -> Void = null;
+	var _endSplash:() -> Void = null;
 
-	public function new(x:Float = 0, y:Float = 0, angle:Float = 0) {
+	@component var machine = new StateMachine<State>();
+
+	public function new(assets:Assets, x:Float = 0, y:Float = 0, angle:Float = 0) {
+		if (assets == null) {
+			log.error('Failed to shoot bullet, assets not found');
+			return;
+		}
+
 		super();
 
 		initArcadePhysics();
@@ -26,14 +43,20 @@ class Bullet extends Quad {
 		this.y = y;
 		anchor(0.5, 0.5);
 
-		// Create visual representation
-		width = bulletWidth;
-		height = bulletHeight;
-		color = 0xFFFF00; // Yellow color for bullets
+		sheet = assets.sheet(Sprites.INK);
+		loop = true;
+		animation = 'idle';
 
-		_killBullet = Timer.delay(this, lifespan, destroy);
+		_killBullet = Timer.delay(this, lifespan, () -> {
+			machine.state = splash;
+		});
 		velocity(baseSpeed, 0);
 		setDirection(angle);
+
+		machine.state = idle;
+		onOverlap(this, (visual1, visual2) -> {
+			machine.state = splash;
+		});
 	}
 
 	override public function destroy() {
@@ -41,14 +64,14 @@ class Bullet extends Quad {
 	}
 
 	function get_damage():Float {
-		return damage;
+		return Math.random() * 0.25 + 0.75;
 	}
 
 	public function setDirection(angle:Float) {
 		var speedX = velocityX;
 		var speedY = velocityY;
 
-		this.rotation = angle * 180 / Math.PI;
+		this.rotation = angle * 180 / Math.PI + 90;
 		this.velocityX = Math.cos(angle) * speedX - Math.sin(angle) * speedY;
 		this.velocityY = Math.sin(angle) * speedX + Math.cos(angle) * speedY;
 	}
@@ -57,5 +80,24 @@ class Bullet extends Quad {
 		if (_killBullet != null) {
 			_killBullet();
 		}
+		if (_endSplash != null) {
+			_endSplash();
+		}
+		paused = !paused;
+	}
+
+	function idle_enter() {
+		loop = true;
+		animation = "idle";
+	}
+
+	function splash_enter() {
+		stop();
+
+		loop = false;
+		animation = "splash";
+		_endSplash = Timer.delay(this, 0.7, () -> {
+			destroy();
+		});
 	}
 }

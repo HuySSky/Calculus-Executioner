@@ -2,15 +2,15 @@ package;
 
 import ceramic.Json;
 import ceramic.SoundPlayer;
-import ceramic.Filter;
-import ceramic.Line;
-import ceramic.Group;
 import ceramic.Color;
 import ceramic.Text;
 import MainScene.LevelData;
 import ceramic.Visual;
 import ceramic.Scene;
 import ceramic.Quad;
+import ceramic.Sprite;
+
+using ceramic.SpritePlugin;
 
 class MenuScene extends Scene {
 	var stageHolder:Visual;
