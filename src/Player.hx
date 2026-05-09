@@ -51,7 +51,7 @@ class Player extends Quad {
 		anchor(0.5, 0.5);
 		width = playerWidth;
 		height = playerHeight;
-		color = 0xFF0000;
+		color = 0xE70926;
 
 		bindInput();
 	}
@@ -121,7 +121,7 @@ class Player extends Quad {
 		var y = app.screen.pointerY;
 		var angle = Math.atan2(y - this.y, x - this.x);
 		var bullet = new Bullet(this.assets, this.x, this.y, angle);
-		bullet.depth = 100;
+		bullet.depth = 2;
 
 		// Add bullet to game
 		if (parent != null) {

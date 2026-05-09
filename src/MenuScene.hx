@@ -1,5 +1,7 @@
 package;
 
+import ceramic.Tween;
+import elements.Im;
 import ceramic.Json;
 import ceramic.SoundPlayer;
 import ceramic.Color;
@@ -18,6 +20,8 @@ class MenuScene extends Scene {
 
 	var menuSong:SoundPlayer;
 	var grid:GridBackground;
+
+	var SUBJECTS = QuestionPool.SUBJECTS;
 
 	public function new() {
 		super();
@@ -59,14 +63,20 @@ class MenuScene extends Scene {
 		grid.depth = -1;
 		add(grid);
 		QuestionPool.loadAllSubjects(assets);
+
+		choiceBox();
 	}
 
 	override function update(delta:Float) {
 		grid.update(delta);
+		if (combBackground.active) {
+			combIM();
+		}
 	}
 
 	override function destroy() {
 		super.destroy();
+		combBackground.destroy();
 	}
 
 	function createStage() {
@@ -76,8 +86,8 @@ class MenuScene extends Scene {
 		var stageHolder = new Visual();
 		add(stageHolder);
 
-		for (i in 0...QuestionPool.SUBJECTS.length) {
-			var subject = QuestionPool.SUBJECTS[i];
+		for (i in 0...SUBJECTS.length) {
+			var subject = SUBJECTS[i];
 			var quad = new Quad();
 			quad.texture = assets.texture('Subject/$subject');
 
@@ -94,7 +104,6 @@ class MenuScene extends Scene {
 
 			var background = new Quad();
 			background.size(quad.width * 1.053, quad.height * 1.045);
-			background.color = 0x5F6B7A;
 			background.anchor(0.5, 0.5);
 			background.pos(quad.x, quad.y);
 			background.depthRange = -1;
@@ -104,21 +113,9 @@ class MenuScene extends Scene {
 				var result = Json.parse(resultJson);
 				var score = result.score;
 
-				if (score < 5.0) {
-					background.color = 0x5F6B7A;
-				} else if (score < 6) {
-					background.color = 0x5C3A1A;
-				} else if (score < 7) {
-					background.color = 0xC46A2D;
-				} else if (score < 8) {
-					background.color = 0xCFCFCF;
-				} else if (score < 9) {
-					background.color = 0xE6C200;
-				} else if (score < 10) {
-					background.color = 0x2DE2E6;
-				} else {
-					background.color = 0x3A3F47;
-				}
+				background.color = MainScene.getColor(score);
+			} else {
+				background.color = MainScene.getColor(0);
 			}
 
 			stageHolder.add(quad);
@@ -136,7 +133,100 @@ class MenuScene extends Scene {
 		app.scenes.main = new MainScene(levelData);
 	}
 
+	// Combination
+	var combBackground:Quad;
+	var choice:Array<Bool> = [false, false, false, false];
+	var chooseOne:Text;
+
+	function choiceBox() {
+		combBackground = new Quad();
+		combBackground.color = Color.BLACK;
+		combBackground.alpha = 0.7;
+		combBackground.depth = 10;
+		combBackground.size(width, height);
+
+		combBackground.active = false;
+		var turnBack = new Text();
+		turnBack.content = "Return";
+		turnBack.color = Color.WHITE;
+		turnBack.onPointerOver(combBackground, info -> {
+			turnBack.color = 0xECCA09;
+		});
+		turnBack.onPointerOut(combBackground, info -> {
+			turnBack.color = Color.WHITE;
+		});
+		turnBack.onPointerDown(combBackground, info -> {
+			combBackground.active = false;
+			this.touchable = true;
+		});
+		turnBack.pointSize = 24;
+		turnBack.x = (combBackground.width - turnBack.width) / 2;
+		turnBack.y = (combBackground.height - turnBack.height) / 2 + combBackground.height * 0.3;
+		combBackground.add(turnBack);
+
+		var play = new Text();
+		play.content = "Play";
+		play.color = Color.WHITE;
+		play.onPointerOver(combBackground, info -> {
+			play.color = 0xECCA09;
+		});
+		play.onPointerOut(combBackground, info -> {
+			play.color = Color.WHITE;
+		});
+		play.onPointerDown(combBackground, playComb);
+		play.pointSize = 24;
+		play.x = (combBackground.width - play.width) / 2;
+		play.y = (combBackground.height - play.height) / 2 + combBackground.height * 0.45;
+		combBackground.add(play);
+
+		chooseOne = new Text();
+		chooseOne.content = "You have to choose at least one subject!";
+		chooseOne.pointSize = 36;
+		chooseOne.color = 0xD6240C;
+		chooseOne.alpha = 0;
+		chooseOne.anchor(0.5, 0.5);
+		chooseOne.pos(width * 0.5, height * 0.2);
+		chooseOne.depth = 12;
+		combBackground.add(chooseOne);
+	}
+
+	function combIM() {
+		Im.begin("Choose the subjects you want to tackle!", 275);
+
+		Im.check(SUBJECTS[0], Im.bool(choice[0]));
+		Im.check(SUBJECTS[1], Im.bool(choice[1]));
+		Im.check(SUBJECTS[2], Im.bool(choice[2]));
+		Im.check(SUBJECTS[3], Im.bool(choice[3]));
+
+		Im.end();
+	}
+
 	function handleCombination() {
-		log.info("Temporary state");
+		combBackground.active = true;
+		this.touchable = false;
+	}
+
+	function playComb(info:ceramic.TouchInfo) {
+		var levelData:LevelData = {
+			subject: [],
+			level: SUBJECTS[4]
+		};
+
+		for (i in 0...4) {
+			if (!choice[i])
+				continue;
+
+			levelData.subject.push(SUBJECTS[i]);
+		}
+
+		if (levelData.subject.length == 0) {
+			log.error("You must choose something.");
+			Tween.start(this, NONE, 1, 1, 0, (value, time) -> {
+				chooseOne.alpha = value;
+			});
+			return;
+		}
+
+		app.scenes.main = new MainScene(levelData);
 	}
 }

@@ -159,7 +159,7 @@ class Enemy extends Quad implements Observable {
 	**/
 	function initVisual(isHard:Bool = false) {
 		// Create main visual
-		defaultColor = isHard ? 0xFF0000 : 0xFF6600;
+		defaultColor = isHard ? 0xCC2A0D : 0xE2A41F;
 		width = enemySize;
 		height = enemySize;
 		color = defaultColor;
@@ -174,7 +174,7 @@ class Enemy extends Quad implements Observable {
 	**/
 	function activateSpeedBuff() {
 		hasSpeedBuff = true;
-		color = 0xFFFF00; // Visual feedback
+		color = 0xCFE412; // Visual feedback
 
 		// Deactivate after 1 second
 		_currentBuff = Timer.delay(this, 1, () -> {
@@ -196,11 +196,11 @@ class Enemy extends Quad implements Observable {
 		healthBar.width = healthBarWidth * percent;
 
 		if (percent >= 0.5) {
-			healthBar.color = 0x00FF00;
+			healthBar.color = 0x41E70E;
 		} else if (percent > 0.25) {
-			healthBar.color = 0xFFFF00;
+			healthBar.color = 0xDDC80B;
 		} else {
-			healthBar.color = 0xFF0000;
+			healthBar.color = 0xEC2308;
 		}
 	}
 

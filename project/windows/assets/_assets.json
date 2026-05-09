@@ -1,13 +1,16 @@
 {
     "assets": [
         {
-            "name": "battle theme.wav"
+            "name": "battle theme.mp3"
         },
         {
             "name": "ceramic.png"
         },
         {
             "name": "ceramic@2x.png"
+        },
+        {
+            "name": "credtis.txt"
         },
         {
             "name": "entypo.fnt"
@@ -22,7 +25,10 @@
             "name": "gun shot effect.mp3"
         },
         {
-            "name": "main menu.wav"
+            "name": "ink.aseprite"
+        },
+        {
+            "name": "main menu.mp3"
         },
         {
             "name": "Notebook/Calculus.png"

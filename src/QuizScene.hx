@@ -48,7 +48,7 @@ class QuizScene extends Visual {
 		background.width = app.screen.width;
 		background.height = app.screen.height;
 		background.color = 0x404040;
-		background.alpha = 0.6;
+		background.alpha = 0.8;
 		background.depth = -1;
 		add(background);
 

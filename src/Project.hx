@@ -8,7 +8,7 @@ class Project extends Entity {
 		super();
 
 		settings.antialiasing = 2;
-		settings.background = 0x191F2B;
+		settings.background = 0x191C2B;
 		settings.targetWidth = 1024;
 		settings.targetHeight = 720;
 		settings.scaling = FIT;

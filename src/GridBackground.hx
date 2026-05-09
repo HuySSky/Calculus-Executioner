@@ -33,7 +33,7 @@ class GridBackground extends Visual {
 
 		add(lineFilter);
 
-		gapX = width * 0.08;
+		gapX = width * 0.083;
 		gapY = gapX;
 
 		var x:Float = 0;
@@ -42,7 +42,7 @@ class GridBackground extends Visual {
 			var line = new Line();
 			line.points = [x, 0, x, height];
 			line.color = Color.GREEN;
-			line.thickness = 2;
+			line.thickness = 3;
 			lineFilter.content.add(line);
 
 			linesVertical.add(line);
@@ -54,7 +54,7 @@ class GridBackground extends Visual {
 			var line = new Line();
 			line.points = [0, y, width, y];
 			line.color = Color.GREEN;
-			line.thickness = 2;
+			line.thickness = 3;
 			lineFilter.content.add(line);
 
 			linesHorizontal.add(line);
@@ -69,7 +69,7 @@ class GridBackground extends Visual {
 	}
 
 	public function update(delta:Float) {
-		var jump = delta * 20;
+		var jump = delta * 22;
 		for (line in linesVertical.items) {
 			var points = line.points;
 

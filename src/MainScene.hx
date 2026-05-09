@@ -60,6 +60,7 @@ class MainScene extends Scene {
 	}
 
 	override function create() {
+		clip = this;
 		initEntities();
 		setupEntities();
 		prepareAudio();
@@ -67,12 +68,16 @@ class MainScene extends Scene {
 		initGameProgress();
 
 		app.onUpdate(this, updateTimer);
+		app.onUpdate(this, setting.update);
 	}
 
 	override function update(delta:Float) {
 		player.update(delta);
 		for (enemy in enemies.items) {
 			enemy.update(delta);
+		}
+		if (grid != null) {
+			grid.update(delta * 0.85);
 		}
 
 		if (player.isDied) {
@@ -82,6 +87,10 @@ class MainScene extends Scene {
 		if (spawnEnemyTime <= 0) {
 			spawnEnemyTime = spawnDelay;
 			spawnEnemy();
+		}
+
+		if (app.input.keyJustReleased(KEY_P)) {
+			score += 0.5;
 		}
 
 		var world = app.arcade.world;
@@ -107,11 +116,14 @@ class MainScene extends Scene {
 
 		pauseContainer.clear();
 		pauseContainer = null;
+		app.offUpdate(updateTimer);
+		app.offUpdate(setting.update);
 
 		super.destroy();
 	}
 
 	// Init game entity
+	var grid:GridBackground;
 
 	function initEntities() {
 		player = new Player(width / 2, height / 2);
@@ -144,14 +156,14 @@ class MainScene extends Scene {
 		add(setting);
 
 		if (levelData.level == QuestionPool.SUBJECTS[4]) {
-			var grid = new GridBackground(width, height);
+			grid = new GridBackground(width, height);
 			grid.depth = -10;
 			add(grid);
 		} else {
 			var paperBackground = new Quad();
 			paperBackground.texture = assets.texture('Notebook/${levelData.level}');
 			paperBackground.depth = -10;
-			paperBackground.alpha = 0.75;
+			paperBackground.alpha = 0.8;
 			add(paperBackground);
 		}
 	}
@@ -159,52 +171,68 @@ class MainScene extends Scene {
 	// Game UI
 	var complete:Text;
 	var scoreText:Text;
+	var scoreBackground:Quad;
 	var healthText:Text;
 
 	function initGameUI() {
 		complete = new Text();
 		complete.content = "Complete this level";
 		complete.pointSize = 30;
-		complete.color = Color.LIME;
+		complete.color = 0x08E613;
 		complete.anchor(1, 0);
 		complete.pos(width * 0.95, height * 0.85);
 		complete.onPointerDown(this, info -> {
 			toGameOverScene();
 		});
+		complete.active = false;
 		add(complete);
 
 		scoreText = new Text();
-		scoreText.pointSize = 24;
+		scoreText.pointSize = 28;
 		scoreText.content = 'Score: 0';
-		scoreText.color = Color.YELLOW;
-		scoreText.pos(width * 0.02, height * 0.85);
-		add(scoreText);
+		scoreText.color = getColor(0, levelData);
+
 		onScoreChange(this, (cur, pre) -> {
 			cur = Std.int(cur * 100) / 100.0;
 			scoreText.content = 'Score: $cur';
-			if (cur >= 10) {
-				scoreText.color = Color.GOLD;
+			scoreText.color = getColor(cur, levelData);
+
+			if (getRank(score, levelData) == "Xuất sắc") {
+				complete.active = true;
 			}
 		});
 		score = 0;
 
+		scoreBackground = new Quad();
+		scoreBackground.color = 0x494B6D;
+		scoreBackground.size(scoreText.width * 1.5, scoreText.height * 1.25);
+
+		scoreBackground.pos(width * 0.08, height * 0.87);
+		scoreText.anchor(0.5, 0.5);
+		scoreText.pos(scoreBackground.width * 0.5, scoreBackground.height * 0.5);
+
+		scoreBackground.anchor(0.5, 0.5);
+		scoreBackground.alpha = 0.72;
+		add(scoreBackground);
+		scoreBackground.add(scoreText);
+
 		healthText = new Text();
-		healthText.pointSize = 24;
+		healthText.pointSize = 28;
 		healthText.content = 'Health: ${player.health}';
-		healthText.color = Color.GREEN;
+		healthText.color = 0x088A2F;
 		healthText.anchor(1, 0);
 		healthText.pos(width * 0.97, height * 0.05);
 		add(healthText);
 		player.onHealthChange(player, () -> {
 			healthText.content = 'Health: ${player.health}';
 			if (player.health <= 1) {
-				healthText.color = Color.RED;
+				healthText.color = 0xE62E0E;
 			} else if (player.health <= 2) {
-				healthText.color = Color.YELLOW;
+				healthText.color = 0xF3C21F;
 			} else if (player.health <= 3) {
-				healthText.color = Color.GREEN;
+				healthText.color = 0x088A2F;
 			} else {
-				healthText.color = Color.LIME;
+				healthText.color = 0x0CD827;
 			}
 		});
 	}
@@ -238,23 +266,35 @@ class MainScene extends Scene {
 
 	// Game progress
 	var spawnDelay:Float = 6;
-	final spawnMax:Float = 6;
-	final spawnMin:Float = 1.2;
-	final spawnRampTime:Float = 5 * 60;
+	var spawnMax:Float = 6;
+	var spawnMin:Float = 1.2;
+	var spawnRampTime:Float = 5 * 60;
 	var spawnRate:Float;
 	var spawnProgress:Visual;
 	var spawnBar:Quad;
 	var spawnEnemyTime:Float = 2;
 
 	var difficulty:Float = 0.3;
-	final difficultyMin:Float = 0.25;
-	final difficultyMax:Float = 1.0;
-	final difficultyRampTime:Float = 10 * 60;
+	var difficultyMin:Float = 0.3;
+	var difficultyMax:Float = 1.0;
+	var difficultyRampTime:Float = 10 * 60;
 	var difficultyRate:Float;
 	var difficultyProgress:Visual;
 	var difficultyBar:Quad;
 
 	function initGameProgress() {
+		if (levelData.level == QuestionPool.SUBJECTS[4]) {
+			spawnDelay = 5;
+			spawnMax = 5;
+			spawnMin = 1;
+			spawnRampTime = 10 * 60;
+
+			difficulty = 0.2;
+			difficultyMax = 1.0;
+			difficultyMin = 0.2;
+			difficultyRampTime = 15 * 60;
+		}
+
 		spawnRate = (spawnMax - spawnMin) / spawnRampTime;
 		difficultyRate = (difficultyMax - difficultyMin) / difficultyRampTime;
 
@@ -337,12 +377,13 @@ class MainScene extends Scene {
 		var enemySpeed = player.get_playerSpeed() * (1 + percentProgress / 3);
 		var pickSubject = Math.floor(Math.random() * levelData.subject.length);
 		var enemy = new Enemy(x, y, enemySpeed, levelData.subject[pickSubject], isHard);
-		add(enemy);
-		enemies.add(enemy);
 
 		if (enemy.destroyed) {
 			return;
 		}
+
+		add(enemy);
+		enemies.add(enemy);
 		enemy.target = player;
 	}
 
@@ -388,24 +429,75 @@ class MainScene extends Scene {
 		app.offUpdate(pauseContainer.update);
 	}
 
-	// Save result
+	// Game result
 
 	function save() {
 		log.info("Entered save function");
-		var result:Result = {
-			score: this.score,
-			rating: ""
-		};
+		var result = getResult();
 
 		var path = 'saves';
 		Files.createDirectory(path);
 		Files.saveContent(path + '/${levelData.level}.json', Json.stringify(result));
 	}
 
+	function getResult() {
+		var result:Result = {
+			score: this.score,
+			rating: getRank(score, levelData)
+		};
+
+		return result;
+	}
+
+	static public function getRank(score:Float, levelData:LevelData = null) {
+		if (levelData != null)
+			if (levelData.level == QuestionPool.SUBJECTS[4]) {
+				score /= levelData.subject.length;
+			}
+
+		if (score < 5) {
+			return "Kém";
+		} else if (score < 6) {
+			return "Trung bình";
+		} else if (score < 7) {
+			return "Trung bình khá";
+		} else if (score < 8) {
+			return "Khá";
+		} else if (score < 9) {
+			return "Giỏi";
+		} else {
+			return "Xuất sắc";
+		}
+	}
+
+	static public function getColor(score:Float, levelData:LevelData = null) {
+		if (levelData != null)
+			if (levelData.level == QuestionPool.SUBJECTS[4]) {
+				score /= levelData.subject.length;
+			}
+
+		if (score < 5.0) {
+			return 0x3B5991;
+		} else if (score < 6) {
+			return 0x5C2F1A;
+		} else if (score < 7) {
+			return 0xCE752D;
+		} else if (score < 8) {
+			return 0xDBA2AE;
+		} else if (score < 9) {
+			return 0xE0BA10;
+		} else if (score < 10) {
+			return 0x3596F1;
+		} else {
+			return 0x312238;
+		}
+	}
+
 	// Switch between scene
 
 	function toGameOverScene() {
-		app.scenes.main = new GameOverScene();
+		var result = getResult();
+		app.scenes.main = new GameOverScene(result);
 	}
 
 	function toMenuScene() {

@@ -24,7 +24,7 @@ class Setting extends Visual {
 		background = new Quad();
 		background.size(32, 32);
 		background.color = Color.TEAL;
-		background.onPointerDown(this, openSetting);
+		background.onPointerDown(this, _openSetting);
 		background.depth = 10;
 		add(background);
 	}
@@ -34,10 +34,21 @@ class Setting extends Visual {
 		settingScreen.destroy();
 	}
 
+	public function update(delta:Float) {
+		if (app.input.keyJustReleased(ESCAPE)) {
+			if (settingScreen.active != true) {
+				openSetting();
+			} else {
+				quitSetting();
+			}
+		}
+	}
+
 	function createSetting() {
 		settingScreen = new Quad();
 		settingScreen.size(screen.width, screen.height);
-		settingScreen.alpha = 0.3;
+		settingScreen.color = 0x191F2B;
+		settingScreen.alpha = 0.75;
 		settingScreen.active = false;
 		settingScreen.depth = 99;
 
@@ -50,7 +61,7 @@ class Setting extends Visual {
 		resume.onPointerOut(settingScreen, info -> {
 			resume.color = Color.WHITE;
 		});
-		resume.onPointerDown(settingScreen, quitSetting);
+		resume.onPointerDown(settingScreen, _quitSetting);
 		resume.pointSize = 24;
 		resume.x = (settingScreen.width - resume.width) / 2;
 		resume.y = (settingScreen.height - resume.height) / 2 + settingScreen.height * 0.1;
@@ -72,12 +83,20 @@ class Setting extends Visual {
 		settingScreen.add(quit);
 	}
 
-	public function openSetting(info:ceramic.TouchInfo) {
+	function _openSetting(info:TouchInfo) {
+		openSetting();
+	}
+
+	public function openSetting() {
 		settingScreen.active = true;
 		emitPaused();
 	}
 
-	function quitSetting(info:ceramic.TouchInfo) {
+	function _quitSetting(info:ceramic.TouchInfo) {
+		quitSetting();
+	}
+
+	function quitSetting() {
 		settingScreen.active = false;
 		emitUnpaused();
 	}
