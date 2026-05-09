@@ -178,6 +178,7 @@ class MainScene extends Scene {
 		complete = new Text();
 		complete.content = "Complete this level";
 		complete.pointSize = 30;
+		complete.font = app.assets.font(Fonts.ROBOTO_BLACK);
 		complete.color = 0x08E613;
 		complete.anchor(1, 0);
 		complete.pos(width * 0.95, height * 0.85);
@@ -190,6 +191,7 @@ class MainScene extends Scene {
 		scoreText = new Text();
 		scoreText.pointSize = 28;
 		scoreText.content = 'Score: 0';
+		scoreText.font = app.assets.font(Fonts.ROBOTO_BLACK);
 		scoreText.color = getColor(0, levelData);
 
 		onScoreChange(this, (cur, pre) -> {
@@ -219,6 +221,7 @@ class MainScene extends Scene {
 		healthText = new Text();
 		healthText.pointSize = 28;
 		healthText.content = 'Health: ${player.health}';
+		healthText.font = app.assets.font(Fonts.ROBOTO_BLACK);
 		healthText.color = 0x088A2F;
 		healthText.anchor(1, 0);
 		healthText.pos(width * 0.97, height * 0.05);
@@ -487,6 +490,24 @@ class MainScene extends Scene {
 		} else if (score < 9) {
 			return 0xE0BA10;
 		} else if (score < 10) {
+			return 0x3596F1;
+		} else {
+			return 0x312238;
+		}
+	}
+
+	static public function getColorFromRating(rating:String) {
+		if (rating == "Kém") {
+			return 0x3B5991;
+		} else if (rating == "Trung bình") {
+			return 0x5C2F1A;
+		} else if (rating == "Trung bình khá") {
+			return 0xCE752D;
+		} else if (rating == "Khá") {
+			return 0xDBA2AE;
+		} else if (rating == "Giỏi") {
+			return 0xE0BA10;
+		} else if (rating == "Xuất sắc") {
 			return 0x3596F1;
 		} else {
 			return 0x312238;

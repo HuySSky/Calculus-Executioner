@@ -47,16 +47,16 @@ class QuizScene extends Visual {
 		background = new Quad();
 		background.width = app.screen.width;
 		background.height = app.screen.height;
-		background.color = 0x404040;
+		background.color = 0x4D4949;
 		background.alpha = 0.8;
 		background.depth = -1;
 		add(background);
 
 		// Question display
 		questionText = new Text();
-		// questionText.font = app.fonts.getDefault();
 		questionText.pointSize = 24;
-		questionText.color = 0xFFFFFF;
+		questionText.color = 0xEED0D8;
+		questionText.font = app.assets.font(Fonts.ROBOTO_BLACK);
 		questionText.x = app.screen.width / 2 - 150;
 		questionText.y = app.screen.height / 2 - 150;
 		questionText.width = 300;
@@ -68,7 +68,7 @@ class QuizScene extends Visual {
 		inputBox = new Quad();
 		inputBox.width = 250;
 		inputBox.height = 40;
-		inputBox.color = 0xFFFFFF;
+		inputBox.color = 0xE0F0DC;
 		inputBox.x = app.screen.width / 2;
 		inputBox.y = app.screen.height / 2;
 		inputBox.depth = 1;
@@ -77,10 +77,10 @@ class QuizScene extends Visual {
 
 		// Answer input text
 		answerInput = new Text();
-		// answerInput.font = app.fonts.getDefault();
 		answerInput.pointSize = 22;
 		answerInput.content = "";
-		answerInput.color = Color.CYAN;
+		answerInput.color = 0x14D3EC;
+		answerInput.font = app.assets.font(Fonts.ROBOTO_BLACK);
 		answerInput.x = inputBox.width * 0.01;
 		answerInput.y = inputBox.height / 2;
 		answerInput.depth = 2;
@@ -96,17 +96,17 @@ class QuizScene extends Visual {
 		submitButton = new Quad();
 		submitButton.width = 120;
 		submitButton.height = 40;
-		submitButton.color = 0x00AA00;
+		submitButton.color = 0x19CE31;
 		submitButton.x = app.screen.width / 2 - 60;
 		submitButton.y = app.screen.height / 2 + 50;
 		add(submitButton);
 
 		// Submit button text
 		submitText = new Text();
-		// submitText.font = app.fonts.getDefault();
 		submitText.pointSize = 16;
-		submitText.color = 0xFFFFFF;
+		submitText.color = 0xDAC7CB;
 		submitText.content = "SUBMIT";
+		submitText.font = app.assets.font(Fonts.ROBOTO_BLACK);
 		submitText.x = submitButton.x + 30;
 		submitText.y = submitButton.y + 12;
 		add(submitText);
@@ -120,9 +120,9 @@ class QuizScene extends Visual {
 
 		// Timer display
 		timerText = new Text();
-		// timerText.font = app.fonts.getDefault();
 		timerText.pointSize = 20;
-		timerText.color = 0xFFFFFF;
+		timerText.color = 0xF1E0DD;
+		timerText.font = app.assets.font(Fonts.ROBOTO_BLACK);
 		timerText.x = app.screen.width / 2 + 100;
 		timerText.y = app.screen.height / 2 - 200;
 		add(timerText);
@@ -158,6 +158,10 @@ class QuizScene extends Visual {
 			}
 
 			updateTimerDisplay();
+		}
+
+		if (app.input.keyJustReleased(ENTER)) {
+			onSubmitPressed();
 		}
 	}
 

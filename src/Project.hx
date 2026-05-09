@@ -14,6 +14,7 @@ class Project extends Entity {
 		settings.scaling = FIT;
 		settings.resizable = true;
 
+		app.assets.addFont(Fonts.ROBOTO_BLACK);
 		app.onceReady(this, ready);
 	}
 

@@ -23,7 +23,7 @@ class Setting extends Visual {
 
 		background = new Quad();
 		background.size(32, 32);
-		background.color = Color.TEAL;
+		background.color = 0x0C7A7A;
 		background.onPointerDown(this, _openSetting);
 		background.depth = 10;
 		add(background);
@@ -47,19 +47,19 @@ class Setting extends Visual {
 	function createSetting() {
 		settingScreen = new Quad();
 		settingScreen.size(screen.width, screen.height);
-		settingScreen.color = 0x191F2B;
+		settingScreen.color = 0x1E2236;
 		settingScreen.alpha = 0.75;
 		settingScreen.active = false;
 		settingScreen.depth = 99;
 
 		var resume = new Text();
 		resume.content = "Resume";
-		resume.color = Color.WHITE;
+		resume.color = 0xD1BCBF;
 		resume.onPointerOver(settingScreen, info -> {
-			resume.color = Color.GOLD;
+			resume.color = 0xE2D411;
 		});
 		resume.onPointerOut(settingScreen, info -> {
-			resume.color = Color.WHITE;
+			resume.color = 0xD1BCBF;
 		});
 		resume.onPointerDown(settingScreen, _quitSetting);
 		resume.pointSize = 24;
@@ -69,12 +69,12 @@ class Setting extends Visual {
 
 		var quit = new Text();
 		quit.content = "Quit";
-		quit.color = Color.WHITE;
+		quit.color = 0xD8B6BB;
 		quit.onPointerOver(settingScreen, info -> {
-			quit.color = Color.GOLD;
+			quit.color = 0xD8C40D;
 		});
 		quit.onPointerOut(settingScreen, info -> {
-			quit.color = Color.WHITE;
+			quit.color = 0xD8B6BB;
 		});
 		quit.onPointerDown(settingScreen, toMenu);
 		quit.pointSize = 24;

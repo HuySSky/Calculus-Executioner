@@ -33,6 +33,7 @@ class GameOverScene extends Scene {
 	override function create() {
 		super.create();
 
+		color = 0x494B6D;
 		createResult();
 		createMenuButton();
 	}
@@ -45,22 +46,37 @@ class GameOverScene extends Scene {
 
 	function createResult() {
 		var score = result.score;
+		var rating = result.rating;
 
 		scoreText = new Text();
 		scoreText.content = 'Điểm môn học: ${score}';
-		scoreText.pointSize = 40;
-		scoreText.color = MainScene.getColor(score);
+		scoreText.font = app.assets.font(Fonts.ROBOTO_BLACK);
+		scoreText.pointSize = 36;
+		scoreText.color = MainScene.getColorFromRating(rating);
 		scoreText.anchor(0.5, 0.5);
-		scoreText.pos(width * 0.5, height * 0.25);
+		scoreText.pos(width * 0.5, height * 0.2);
 		add(scoreText);
 
 		ratingText = new Text();
-		ratingText.content = 'Đánh giá xếp loại: ${result.rating}';
-		ratingText.pointSize = 36;
-		ratingText.color = MainScene.getColor(score);
+		ratingText.content = 'Đánh giá xếp loại: ${rating}';
+		ratingText.font = app.assets.font(Fonts.ROBOTO_BLACK);
+		ratingText.pointSize = 32;
+		ratingText.color = MainScene.getColorFromRating(rating);
 		ratingText.anchor(0.5, 0.5);
-		ratingText.pos(width * 0.5, height * 0.4);
+		ratingText.pos(width * 0.5, height * 0.35);
 		add(ratingText);
+
+		if (rating == "Kém") {
+			var fail = new Text();
+			fail.content = "Bạn rớt môn";
+			fail.pointSize = 40;
+			fail.font = app.assets.font(Fonts.ROBOTO_BLACK);
+			fail.anchor(0.5, 0.5);
+			fail.pos(width * 0.5, height * 0.5);
+			fail.color = MainScene.getColorFromRating(rating);
+
+			add(fail);
+		}
 	}
 
 	function createMenuButton() {
