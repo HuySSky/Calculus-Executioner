@@ -50,7 +50,7 @@ class GameOverScene extends Scene {
 
 		scoreText = new Text();
 		scoreText.content = 'Điểm môn học: ${score}';
-		scoreText.font = app.assets.font(Fonts.ROBOTO_BLACK);
+		scoreText.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
 		scoreText.pointSize = 36;
 		scoreText.color = MainScene.getColorFromRating(rating);
 		scoreText.anchor(0.5, 0.5);
@@ -59,7 +59,7 @@ class GameOverScene extends Scene {
 
 		ratingText = new Text();
 		ratingText.content = 'Đánh giá xếp loại: ${rating}';
-		ratingText.font = app.assets.font(Fonts.ROBOTO_BLACK);
+		ratingText.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
 		ratingText.pointSize = 32;
 		ratingText.color = MainScene.getColorFromRating(rating);
 		ratingText.anchor(0.5, 0.5);
@@ -70,7 +70,7 @@ class GameOverScene extends Scene {
 			var fail = new Text();
 			fail.content = "Bạn rớt môn";
 			fail.pointSize = 40;
-			fail.font = app.assets.font(Fonts.ROBOTO_BLACK);
+			fail.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
 			fail.anchor(0.5, 0.5);
 			fail.pos(width * 0.5, height * 0.5);
 			fail.color = MainScene.getColorFromRating(rating);

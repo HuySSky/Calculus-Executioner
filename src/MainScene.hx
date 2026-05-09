@@ -178,7 +178,7 @@ class MainScene extends Scene {
 		complete = new Text();
 		complete.content = "Complete this level";
 		complete.pointSize = 30;
-		complete.font = app.assets.font(Fonts.ROBOTO_BLACK);
+		complete.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
 		complete.color = 0x08E613;
 		complete.anchor(1, 0);
 		complete.pos(width * 0.95, height * 0.85);
@@ -191,7 +191,7 @@ class MainScene extends Scene {
 		scoreText = new Text();
 		scoreText.pointSize = 28;
 		scoreText.content = 'Score: 0';
-		scoreText.font = app.assets.font(Fonts.ROBOTO_BLACK);
+		scoreText.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
 		scoreText.color = getColor(0, levelData);
 
 		onScoreChange(this, (cur, pre) -> {
@@ -221,7 +221,7 @@ class MainScene extends Scene {
 		healthText = new Text();
 		healthText.pointSize = 28;
 		healthText.content = 'Health: ${player.health}';
-		healthText.font = app.assets.font(Fonts.ROBOTO_BLACK);
+		healthText.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
 		healthText.color = 0x088A2F;
 		healthText.anchor(1, 0);
 		healthText.pos(width * 0.97, height * 0.05);

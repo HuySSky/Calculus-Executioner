@@ -56,7 +56,7 @@ class QuizScene extends Visual {
 		questionText = new Text();
 		questionText.pointSize = 24;
 		questionText.color = 0xEED0D8;
-		questionText.font = app.assets.font(Fonts.ROBOTO_BLACK);
+		questionText.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
 		questionText.x = app.screen.width / 2 - 150;
 		questionText.y = app.screen.height / 2 - 150;
 		questionText.width = 300;
@@ -80,7 +80,7 @@ class QuizScene extends Visual {
 		answerInput.pointSize = 22;
 		answerInput.content = "";
 		answerInput.color = 0x14D3EC;
-		answerInput.font = app.assets.font(Fonts.ROBOTO_BLACK);
+		answerInput.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
 		answerInput.x = inputBox.width * 0.01;
 		answerInput.y = inputBox.height / 2;
 		answerInput.depth = 2;
@@ -106,7 +106,7 @@ class QuizScene extends Visual {
 		submitText.pointSize = 16;
 		submitText.color = 0xDAC7CB;
 		submitText.content = "SUBMIT";
-		submitText.font = app.assets.font(Fonts.ROBOTO_BLACK);
+		submitText.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
 		submitText.x = submitButton.x + 30;
 		submitText.y = submitButton.y + 12;
 		add(submitText);
@@ -122,7 +122,7 @@ class QuizScene extends Visual {
 		timerText = new Text();
 		timerText.pointSize = 20;
 		timerText.color = 0xF1E0DD;
-		timerText.font = app.assets.font(Fonts.ROBOTO_BLACK);
+		timerText.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
 		timerText.x = app.screen.width / 2 + 100;
 		timerText.y = app.screen.height / 2 - 200;
 		add(timerText);

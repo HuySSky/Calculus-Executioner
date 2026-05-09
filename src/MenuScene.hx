@@ -43,7 +43,7 @@ class MenuScene extends Scene {
 		graduationButton = new Text();
 		graduationButton.content = "Xét tốt nghiệp";
 		graduationButton.pointSize = 36;
-		graduationButton.font = app.assets.font(Fonts.ROBOTO_BLACK);
+		graduationButton.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
 		graduationButton.anchor(0.5, 0.5);
 		graduationButton.pos(width * 0.85, height * 0.94);
 		graduationButton.color = Color.LIME;
@@ -183,7 +183,7 @@ class MenuScene extends Scene {
 		chooseOne = new Text();
 		chooseOne.content = "You have to choose at least one subject!";
 		chooseOne.pointSize = 36;
-		chooseOne.font = app.assets.font(Fonts.ROBOTO_BLACK);
+		chooseOne.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
 		chooseOne.color = 0xD6240C;
 		chooseOne.alpha = 0;
 		chooseOne.anchor(0.5, 0.5);
