@@ -15,6 +15,7 @@ class Project extends Entity {
 		settings.resizable = true;
 
 		app.assets.addFont(Fonts.ROBOTO_MEDIUM);
+		app.assets.addImage(Images.SETTING);
 		app.onceReady(this, ready);
 	}
 

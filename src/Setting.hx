@@ -22,8 +22,7 @@ class Setting extends Visual {
 		createSetting();
 
 		background = new Quad();
-		background.size(32, 32);
-		background.color = 0x0C7A7A;
+		background.texture = app.assets.texture(Images.SETTING);
 		background.onPointerDown(this, _openSetting);
 		background.depth = 10;
 		add(background);

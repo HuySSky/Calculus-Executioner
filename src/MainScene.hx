@@ -153,6 +153,7 @@ class MainScene extends Scene {
 			quizScene.touchable = true;
 			unPause();
 		});
+		setting.pos(width * 0.015, height * 0.015);
 		add(setting);
 
 		if (levelData.level == QuestionPool.SUBJECTS[4]) {
@@ -165,6 +166,9 @@ class MainScene extends Scene {
 			paperBackground.depth = -10;
 			paperBackground.alpha = 0.8;
 			add(paperBackground);
+			if (levelData.level == "UIT") {
+				paperBackground.alpha = 0.95;
+			}
 		}
 	}
 
@@ -277,8 +281,8 @@ class MainScene extends Scene {
 	var spawnBar:Quad;
 	var spawnEnemyTime:Float = 2;
 
-	var difficulty:Float = 0.3;
-	var difficultyMin:Float = 0.3;
+	var difficulty:Float = 0.2;
+	var difficultyMin:Float = 0.2;
 	var difficultyMax:Float = 1.0;
 	var difficultyRampTime:Float = 10 * 60;
 	var difficultyRate:Float;
@@ -292,9 +296,9 @@ class MainScene extends Scene {
 			spawnMin = 1;
 			spawnRampTime = 10 * 60;
 
-			difficulty = 0.2;
+			difficulty = 0.1;
 			difficultyMax = 1.0;
-			difficultyMin = 0.2;
+			difficultyMin = 0.1;
 			difficultyRampTime = 15 * 60;
 		}
 
@@ -438,9 +442,9 @@ class MainScene extends Scene {
 		log.info("Entered save function");
 		var result = getResult();
 
-		var path = 'saves';
+		var path = 'assets/saves/${levelData.level}.json';
 		Files.createDirectory(path);
-		Files.saveContent(path + '/${levelData.level}.json', Json.stringify(result));
+		Files.saveContent(path, Json.stringify(result));
 	}
 
 	function getResult() {
@@ -468,8 +472,10 @@ class MainScene extends Scene {
 			return "Khá";
 		} else if (score < 9) {
 			return "Giỏi";
-		} else {
+		} else if (score < 10) {
 			return "Xuất sắc";
+		} else {
+			return "Xuất sắc!";
 		}
 	}
 
@@ -498,19 +504,19 @@ class MainScene extends Scene {
 
 	static public function getColorFromRating(rating:String) {
 		if (rating == "Kém") {
-			return 0x3B5991;
+			return getColor(0);
 		} else if (rating == "Trung bình") {
-			return 0x5C2F1A;
+			return getColor(5.1);
 		} else if (rating == "Trung bình khá") {
-			return 0xCE752D;
+			return getColor(6.1);
 		} else if (rating == "Khá") {
-			return 0xDBA2AE;
+			return getColor(7.1);
 		} else if (rating == "Giỏi") {
-			return 0xE0BA10;
+			return getColor(8.1);
 		} else if (rating == "Xuất sắc") {
-			return 0x3596F1;
+			return getColor(9.1);
 		} else {
-			return 0x312238;
+			return getColor(10);
 		}
 	}
 

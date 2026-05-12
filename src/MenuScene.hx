@@ -1,5 +1,6 @@
 package;
 
+import ceramic.Files;
 import ceramic.Tween;
 import elements.Im;
 import ceramic.Json;
@@ -32,6 +33,7 @@ class MenuScene extends Scene {
 		assets.addAll(~/^Questions\/.*$/);
 		assets.addAll(~/^saves\/.*$/);
 		assets.add(Sounds.MAIN_MENU, null, {stream: true});
+		assets.addText(Texts.ACCESS_UIT);
 	}
 
 	override function create() {
@@ -46,8 +48,11 @@ class MenuScene extends Scene {
 		graduationButton.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
 		graduationButton.anchor(0.5, 0.5);
 		graduationButton.pos(width * 0.85, height * 0.94);
-		graduationButton.color = Color.LIME;
+		graduationButton.color = 0x17f53c;
 		graduationButton.depth = 3;
+		graduationButton.onPointerDown(this, info -> {
+			app.scenes.main = new GraduateScene();
+		});
 		add(graduationButton);
 
 		var bottomMargin = new Quad();
@@ -80,6 +85,8 @@ class MenuScene extends Scene {
 		combBackground.destroy();
 	}
 
+	var allow:Text;
+
 	function createStage() {
 		var posX:Array<Float> = [width * 0.2, width * 0.5, width * 0.8];
 		var posY:Array<Float> = [height * 0.2, height * 0.6];
@@ -96,9 +103,9 @@ class MenuScene extends Scene {
 			quad.x = posX[i % 3];
 			quad.y = posY[Std.int(i / 3)];
 			quad.onPointerDown(stageHolder, (info) -> {
-				if (i <= 3) {
+				if (i != 4) {
 					handleNormalSubject(subject);
-				} else if (i == 4) {
+				} else {
 					handleCombination();
 				}
 			});
@@ -112,9 +119,8 @@ class MenuScene extends Scene {
 			var resultJson:String = assets.text('saves/$subject');
 			if (resultJson != null) {
 				var result = Json.parse(resultJson);
-				var score = result.score;
 
-				background.color = MainScene.getColor(score);
+				background.color = MainScene.getColorFromRating(result.rating);
 			} else {
 				background.color = MainScene.getColor(0);
 			}
@@ -122,9 +128,35 @@ class MenuScene extends Scene {
 			stageHolder.add(quad);
 			stageHolder.add(background);
 		}
+
+		allow = new Text();
+		allow.content = "Bạn chưa đủ điều kiện chơi màn chơi này!";
+		allow.pointSize = 36;
+		allow.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
+		allow.color = 0xE70A1C;
+		allow.anchor(0.5, 0.5);
+		allow.pos(width * 0.49, height * 0.29);
+		allow.alpha = 0;
+		add(allow);
 	}
 
 	function handleNormalSubject(name:String) {
+		if (name == SUBJECTS[5]) {
+			var judgement = app.assets.text(Texts.ACCESS_UIT);
+			var allowAccess = {allow: false};
+			if (judgement != null) {
+				allowAccess = Json.parse(judgement);
+			};
+
+			if (allowAccess.allow = false) {
+				log.info("You are not allow to access this level");
+				Tween.start(this, NONE, 1, 1, 0, (value, time) -> {
+					allow.alpha = value;
+				});
+				return;
+			}
+		}
+
 		var levelData:LevelData = {
 			subject: [],
 			level: name
@@ -183,7 +215,6 @@ class MenuScene extends Scene {
 		chooseOne = new Text();
 		chooseOne.content = "You have to choose at least one subject!";
 		chooseOne.pointSize = 36;
-		chooseOne.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
 		chooseOne.color = 0xD6240C;
 		chooseOne.alpha = 0;
 		chooseOne.anchor(0.5, 0.5);

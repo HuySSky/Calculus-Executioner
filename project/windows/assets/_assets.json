@@ -1,6 +1,9 @@
 {
     "assets": [
         {
+            "name": "accessUIT.json"
+        },
+        {
             "name": "battle theme.mp3"
         },
         {
@@ -43,6 +46,9 @@
             "name": "Notebook/Probability and Statistics.png"
         },
         {
+            "name": "Notebook/UIT.png"
+        },
+        {
             "name": "Questions/Calculus.json"
         },
         {
@@ -53,6 +59,9 @@
         },
         {
             "name": "Questions/Probability and Statistics.json"
+        },
+        {
+            "name": "Questions/UIT.json"
         },
         {
             "name": "Roboto-Medium.fnt"
@@ -88,6 +97,9 @@
             "name": "saves/Probability and Statistics.json"
         },
         {
+            "name": "setting.png"
+        },
+        {
             "name": "Subject/Calculus.png"
         },
         {
@@ -101,6 +113,9 @@
         },
         {
             "name": "Subject/Probability and Statistics.png"
+        },
+        {
+            "name": "Subject/UIT.png"
         },
         {
             "name": "white.png"

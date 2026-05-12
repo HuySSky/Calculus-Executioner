@@ -17,7 +17,8 @@ class QuestionPool {
 		"Calculus",
 		"Discrete Structures",
 		"Probability and Statistics",
-		"Combination"
+		"Combination",
+		"UIT"
 	];
 
 	/**

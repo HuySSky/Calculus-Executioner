@@ -33,7 +33,7 @@ class GameOverScene extends Scene {
 	override function create() {
 		super.create();
 
-		color = 0x494B6D;
+		color = 0x725486;
 		createResult();
 		createMenuButton();
 	}

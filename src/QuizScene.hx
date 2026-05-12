@@ -22,7 +22,7 @@ class QuizScene extends Visual {
 	var questionData:QuestionData = null;
 
 	// Timer
-	var timeRemaining:Float = 60.0;
+	var timeRemaining:Float = 120.0;
 	var timerRunning:Bool = false;
 
 	var onComplete:(Bool, EnemyDifficulty) -> Void;
@@ -54,35 +54,34 @@ class QuizScene extends Visual {
 
 		// Question display
 		questionText = new Text();
-		questionText.pointSize = 24;
+		questionText.pointSize = 28;
 		questionText.color = 0xEED0D8;
 		questionText.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
-		questionText.x = app.screen.width / 2 - 150;
-		questionText.y = app.screen.height / 2 - 150;
-		questionText.width = 300;
+		questionText.x = app.screen.width * 0.11;
+		questionText.y = app.screen.height * 0.17;
 		questionText.depth = 1;
-		questionText.fitWidth = 300;
+		questionText.fitWidth = 900;
 		add(questionText);
 
 		// Input box background
 		inputBox = new Quad();
-		inputBox.width = 250;
-		inputBox.height = 40;
-		inputBox.color = 0xE0F0DC;
-		inputBox.x = app.screen.width / 2;
-		inputBox.y = app.screen.height / 2;
+		inputBox.width = 277;
+		inputBox.height = 55;
+		inputBox.color = 0xC4E4BC;
+		inputBox.x = app.screen.width * 0.499;
+		inputBox.y = app.screen.height * 0.62;
 		inputBox.depth = 1;
 		inputBox.anchor(0.5, 0.5);
 		add(inputBox);
 
 		// Answer input text
 		answerInput = new Text();
-		answerInput.pointSize = 22;
+		answerInput.pointSize = 24;
 		answerInput.content = "";
-		answerInput.color = 0x14D3EC;
+		answerInput.color = 0x14C1EC;
 		answerInput.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
 		answerInput.x = inputBox.width * 0.01;
-		answerInput.y = inputBox.height / 2;
+		answerInput.y = inputBox.height * 0.5;
 		answerInput.depth = 2;
 		answerInput.anchor(0, 0.5);
 		inputBox.add(answerInput);
@@ -94,22 +93,24 @@ class QuizScene extends Visual {
 
 		// Submit button
 		submitButton = new Quad();
-		submitButton.width = 120;
-		submitButton.height = 40;
-		submitButton.color = 0x19CE31;
-		submitButton.x = app.screen.width / 2 - 60;
-		submitButton.y = app.screen.height / 2 + 50;
+		submitButton.width = 135;
+		submitButton.height = 55;
+		submitButton.color = 0x1BE214;
+		submitButton.x = app.screen.width * 0.5;
+		submitButton.y = app.screen.height * 0.78;
+		submitButton.anchor(0.5, 0.5);
 		add(submitButton);
 
 		// Submit button text
 		submitText = new Text();
-		submitText.pointSize = 16;
-		submitText.color = 0xDAC7CB;
+		submitText.pointSize = 22;
+		submitText.color = 0xEEC9CE;
 		submitText.content = "SUBMIT";
 		submitText.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
-		submitText.x = submitButton.x + 30;
-		submitText.y = submitButton.y + 12;
-		add(submitText);
+		submitText.x = submitButton.width * 0.5;
+		submitText.y = submitButton.height * 0.5;
+		submitText.anchor(0.5, 0.5);
+		submitButton.add(submitText);
 
 		// Add click component to submit button
 		var click = new Click();
@@ -120,11 +121,11 @@ class QuizScene extends Visual {
 
 		// Timer display
 		timerText = new Text();
-		timerText.pointSize = 20;
-		timerText.color = 0xF1E0DD;
+		timerText.pointSize = 32;
+		timerText.color = 0xECC7C0;
 		timerText.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
-		timerText.x = app.screen.width / 2 + 100;
-		timerText.y = app.screen.height / 2 - 200;
+		timerText.x = app.screen.width * 0.71;
+		timerText.y = app.screen.height * 0.23;
 		add(timerText);
 	}
 
@@ -136,7 +137,7 @@ class QuizScene extends Visual {
 		active = true;
 
 		// Reset timer
-		timeRemaining = 60.0;
+		timeRemaining = 120.0;
 		timerRunning = true;
 		updateTimerDisplay();
 
