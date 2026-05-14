@@ -57,8 +57,8 @@ class QuizScene extends Visual {
 		questionText.pointSize = 28;
 		questionText.color = 0xEED0D8;
 		questionText.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
-		questionText.x = app.screen.width * 0.11;
-		questionText.y = app.screen.height * 0.17;
+		questionText.x = app.screen.width * 0.08;
+		questionText.y = app.screen.height * 0.16;
 		questionText.depth = 1;
 		questionText.fitWidth = 900;
 		add(questionText);
@@ -124,8 +124,8 @@ class QuizScene extends Visual {
 		timerText.pointSize = 32;
 		timerText.color = 0xECC7C0;
 		timerText.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
-		timerText.x = app.screen.width * 0.71;
-		timerText.y = app.screen.height * 0.23;
+		timerText.x = app.screen.width * 0.72;
+		timerText.y = app.screen.height * 0.07;
 		add(timerText);
 	}
 
