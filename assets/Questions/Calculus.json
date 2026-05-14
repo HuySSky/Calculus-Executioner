@@ -201,7 +201,7 @@
     },
     {
         "question": "Chuỗi sau hội tụ hay phân kỳ?\nTổng (1->+inf): (3x^2 + 5x^3 + 2x + 4) / (6x + x^3 + 1)\nHội tụ (0), Phân kỳ (1)",
-        "answer": "0",
+        "answer": "1",
         "difficulty": "easy"
     },
     {

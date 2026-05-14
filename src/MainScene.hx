@@ -272,34 +272,34 @@ class MainScene extends Scene {
 	}
 
 	// Game progress
-	var spawnDelay:Float = 6;
-	var spawnMax:Float = 6;
-	var spawnMin:Float = 1.2;
-	var spawnRampTime:Float = 5 * 60;
+	var spawnDelay:Float = 7;
+	var spawnMax:Float = 7;
+	var spawnMin:Float = 1.5;
+	var spawnRampTime:Float = 10 * 60;
 	var spawnRate:Float;
 	var spawnProgress:Visual;
 	var spawnBar:Quad;
 	var spawnEnemyTime:Float = 2;
 
-	var difficulty:Float = 0.2;
-	var difficultyMin:Float = 0.2;
+	var difficulty:Float = 0.1;
+	var difficultyMin:Float = 0.1;
 	var difficultyMax:Float = 1.0;
-	var difficultyRampTime:Float = 10 * 60;
+	var difficultyRampTime:Float = 15 * 60;
 	var difficultyRate:Float;
 	var difficultyProgress:Visual;
 	var difficultyBar:Quad;
 
 	function initGameProgress() {
 		if (levelData.level == QuestionPool.SUBJECTS[4]) {
-			spawnDelay = 5;
-			spawnMax = 5;
+			spawnDelay = 6;
+			spawnMax = 6;
 			spawnMin = 1;
-			spawnRampTime = 10 * 60;
+			spawnRampTime = 13 * 60;
 
-			difficulty = 0.1;
+			difficulty = 0.0;
 			difficultyMax = 1.0;
-			difficultyMin = 0.1;
-			difficultyRampTime = 15 * 60;
+			difficultyMin = 0.0;
+			difficultyRampTime = 20 * 60;
 		}
 
 		spawnRate = (spawnMax - spawnMin) / spawnRampTime;
@@ -443,7 +443,7 @@ class MainScene extends Scene {
 		var result = getResult();
 
 		var path = 'assets/saves/${levelData.level}.json';
-		Files.createDirectory(path);
+		// Files.createDirectory(path);
 		Files.saveContent(path, Json.stringify(result));
 	}
 
@@ -603,11 +603,11 @@ class MainScene extends Scene {
 		switch (difficulty) {
 			case EASY:
 				{
-					player.takeDamage(1);
+					player.takeDamage(0.5);
 				}
 			case HARD:
 				{
-					player.takeDamage(2);
+					player.takeDamage(1);
 				}
 		}
 	}

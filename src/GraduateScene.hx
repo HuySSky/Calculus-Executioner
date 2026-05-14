@@ -39,6 +39,7 @@ class GraduateScene extends Scene {
 
 	function initScoreboard() {
 		scoreOfSubject = new Visual();
+		add(scoreOfSubject);
 
 		var SUBJECTS = QuestionPool.SUBJECTS;
 		var y = 0.0;

@@ -159,7 +159,7 @@ class Enemy extends Quad implements Observable {
 	**/
 	function initVisual(isHard:Bool = false) {
 		// Create main visual
-		defaultColor = isHard ? 0xCC2A0D : 0xE2A41F;
+		defaultColor = isHard ? 0xCC2A0D : 0xE07715;
 		width = enemySize;
 		height = enemySize;
 		color = defaultColor;

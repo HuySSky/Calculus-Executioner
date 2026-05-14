@@ -1,0 +1,11 @@
+Di chuyển: WASD
+Bắn viên đạn: Chuột trái. Bạn có thể đè để bắn liên tục
+Khi bị quái vật (Hình vuông cam, vàng) tấn công, bạn sẽ phải trả lời một câu hỏi toán học. 
+
+Quái vật: Với quái vật cam, bạn trả lời câu khó. Với quái vật vàng, bạn trả lời câu dễ.
+Khi trả lời sai: Bạn sẽ bị trừ máu (-0.5 với câu dễ; -1 với câu khó)
+Khi trả lời đúng: Bạn được cộng điểm (+0.5 với câu dễ; +1 với câu khó) và cộng máu (+0.25 với câu dễ; +0.5 với câu khó)
+Khi tiêu diệt quái vật: Bạn được cộng 20% điểm câu hỏi.
+
+Để mở màn chơi UIT: Bạn cần phải qua môn các môn học: Đại số tuyến tính, giải tích, cấu trúc rời rạc, xác suất thống kê.
+Qua môn: Thành tích màn chơi đạt 5.0 điểm trở lên.

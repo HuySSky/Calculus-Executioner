@@ -131,7 +131,7 @@ class MenuScene extends Scene {
 
 		allow = new Text();
 		allow.content = "Bạn chưa đủ điều kiện chơi màn chơi này!";
-		allow.pointSize = 36;
+		allow.pointSize = 48;
 		allow.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
 		allow.color = 0xE70A1C;
 		allow.anchor(0.5, 0.5);
@@ -143,14 +143,15 @@ class MenuScene extends Scene {
 	function handleNormalSubject(name:String) {
 		if (name == SUBJECTS[5]) {
 			var judgement = app.assets.text(Texts.ACCESS_UIT);
+			log.info(judgement);
 			var allowAccess = {allow: false};
 			if (judgement != null) {
 				allowAccess = Json.parse(judgement);
 			};
 
-			if (allowAccess.allow = false) {
+			if (allowAccess.allow == false) {
 				log.info("You are not allow to access this level");
-				Tween.start(this, NONE, 1, 1, 0, (value, time) -> {
+				Tween.start(this, LINEAR, 2.5, 1, 0, (value, time) -> {
 					allow.alpha = value;
 				});
 				return;
@@ -254,7 +255,7 @@ class MenuScene extends Scene {
 
 		if (levelData.subject.length == 0) {
 			log.error("You must choose something.");
-			Tween.start(this, NONE, 1, 1, 0, (value, time) -> {
+			Tween.start(this, LINEAR, 2.5, 1, 0, (value, time) -> {
 				chooseOne.alpha = value;
 			});
 			return;
