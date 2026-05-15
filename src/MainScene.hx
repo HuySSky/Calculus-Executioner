@@ -167,7 +167,7 @@ class MainScene extends Scene {
 			paperBackground.alpha = 0.8;
 			add(paperBackground);
 			if (levelData.level == "UIT") {
-				paperBackground.alpha = 0.95;
+				paperBackground.alpha = 0.85;
 			}
 		}
 	}
@@ -486,7 +486,7 @@ class MainScene extends Scene {
 			}
 
 		if (score < 5.0) {
-			return 0x3B5991;
+			return 0x3B5396;
 		} else if (score < 6) {
 			return 0x5C2F1A;
 		} else if (score < 7) {
@@ -496,9 +496,9 @@ class MainScene extends Scene {
 		} else if (score < 9) {
 			return 0xE0BA10;
 		} else if (score < 10) {
-			return 0x3596F1;
+			return 0x3EAAF1;
 		} else {
-			return 0x312238;
+			return 0x3E2947;
 		}
 	}
 

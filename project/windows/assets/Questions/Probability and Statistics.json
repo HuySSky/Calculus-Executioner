@@ -230,7 +230,7 @@
         "difficulty": "hard"
     },
     {
-        "question": "(Làm tròn 4 chữ số có nghĩa)\nTrung bình 40 giây có 2 ô tô đi qua trạm giao thông. Tính xác suất Có 3 đến 4 ô tô đi qua trạm trong khoảng thời gian 2 phút.",
+        "question": "(Làm tròn 4 chữ số có nghĩa)\nTrung bình 40 giây có 2 ô tô đi qua trạm giao thông. Tính xác suất có 3 đến 4 ô tô đi qua trạm trong khoảng thời gian 2 phút.",
         "answer": "0.2231",
         "difficulty": "easy"
     },

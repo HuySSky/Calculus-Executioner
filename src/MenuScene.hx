@@ -89,7 +89,7 @@ class MenuScene extends Scene {
 
 	function createStage() {
 		var posX:Array<Float> = [width * 0.2, width * 0.5, width * 0.8];
-		var posY:Array<Float> = [height * 0.2, height * 0.6];
+		var posY:Array<Float> = [height * 0.22, height * 0.647];
 
 		var stageHolder = new Visual();
 		add(stageHolder);
@@ -135,19 +135,20 @@ class MenuScene extends Scene {
 		allow.font = app.assets.font(Fonts.ROBOTO_MEDIUM);
 		allow.color = 0xE70A1C;
 		allow.anchor(0.5, 0.5);
-		allow.pos(width * 0.49, height * 0.29);
+		allow.pos(width * 0.49, height * 0.26);
 		allow.alpha = 0;
 		add(allow);
 	}
 
 	function handleNormalSubject(name:String) {
 		if (name == SUBJECTS[5]) {
-			var judgement = app.assets.text(Texts.ACCESS_UIT);
+			var judgement = assets.text(Texts.ACCESS_UIT);
 			log.info(judgement);
 			var allowAccess = {allow: false};
 			if (judgement != null) {
 				allowAccess = Json.parse(judgement);
 			};
+			log.info(allowAccess);
 
 			if (allowAccess.allow == false) {
 				log.info("You are not allow to access this level");

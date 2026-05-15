@@ -13,6 +13,7 @@ class Project extends Entity {
 		settings.targetHeight = 720;
 		settings.scaling = FIT;
 		settings.resizable = true;
+		settings.title = "Calculus Executioner";
 
 		app.assets.addFont(Fonts.ROBOTO_MEDIUM);
 		app.assets.addImage(Images.SETTING);

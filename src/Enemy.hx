@@ -196,11 +196,11 @@ class Enemy extends Quad implements Observable {
 		healthBar.width = healthBarWidth * percent;
 
 		if (percent >= 0.5) {
-			healthBar.color = 0x41E70E;
+			healthBar.color = 0x52EB15;
 		} else if (percent > 0.25) {
-			healthBar.color = 0xDDC80B;
+			healthBar.color = 0xDFCA13;
 		} else {
-			healthBar.color = 0xEC2308;
+			healthBar.color = 0xDD250C;
 		}
 	}
 
